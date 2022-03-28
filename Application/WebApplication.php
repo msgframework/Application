@@ -10,9 +10,9 @@ use Msgframework\Lib\Document\Document;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class WebApplication extends AbstractApplication implements SessionAwareWebApplicationInterface
+class WebApplication extends AbstractApplication implements SessionAwareInterface
 {
-    use SessionAwareWebApplicationTrait;
+    use SessionAwareTrait;
     protected int $id;
     protected string $name;
     protected string $type;
