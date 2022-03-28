@@ -1,0 +1,34 @@
+{
+  "name": "msgframework/application",
+  "description": "description",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Msgframework\\Lib\\Application\\": "/Application",
+      "Msgframework\\Lib\\Document\\": "/Document",
+      "Msgframework\\Lib\\Document\\Feed\\": "/Document/Feed",
+      "Msgframework\\Lib\\Document\\Opensearch\\": "/Document/Opensearch",
+      "Msgframework\\Lib\\Document\\Renderer\\": "/Document/Renderer",
+      "Msgframework\\Lib\\Document\\Renderer\\Feed\\": "/Document/Renderer/Feed",
+      "Msgframework\\Lib\\Document\\Renderer\\Html\\": "/Document/Renderer/Html"
+    }
+  },
+  "authors": [
+    {
+      "name": "MSGroupFM",
+      "email": "admin@msgru.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "joomla/di": "^2.0",
+    "msgframework/language": "^1.0",
+    "msgframework/config": "^1.0",
+    "msgframework/route": "^1.0",
+    "msgframework/identity": "^1.0",
+    "msgframework/assetmanager": "^v1.0",
+    "symfony/http-foundation": "^5.4",
+    "msgframework/date": "^1.0",
+    "symfony/web-link": "^5.4"
+  }
+}
