@@ -10,7 +10,7 @@ abstract class AbstractApplication
     protected WebApplicationFactory $factory;
     protected Config $config;
 
-    public function __construct(WebApplicationFactory $factory, ConfigurationInterface $configuration)
+    public function __construct(WebApplicationFactoryInterface $factory, ConfigurationInterface $configuration)
     {
         $this->factory = $factory;
         $this->config = new Config($configuration, $this->factory->getCacheDir());
