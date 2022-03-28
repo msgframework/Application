@@ -12,5 +12,4 @@ interface WebApplicationFactoryInterface
     public function getCacheDir(): string;
     public function getRequest(): Request;
     public function getContainer(): Container;
-    public function createApplication(string $type, string $name, string $title, ConfigurationInterface $configuration): WebApplicationInterface;
 }
