@@ -14,7 +14,7 @@ class WebApplication extends AbstractApplication implements SessionAwareInterfac
 {
     use SessionAwareTrait;
 
-    public string $title;
+    protected string $title;
     public string $charSet = 'utf-8';
     public string $httpVersion = '1.1';
 
