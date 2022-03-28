@@ -10,10 +10,8 @@ use Msgframework\Lib\Document\Document;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class WebApplication extends AbstractApplication implements SessionAwareInterface
+class WebApplication extends AbstractApplication implements WebApplicationInterface
 {
-    use SessionAwareTrait;
-
     protected string $title;
     public string $charSet = 'utf-8';
     public string $httpVersion = '1.1';
