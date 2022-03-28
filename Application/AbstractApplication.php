@@ -7,7 +7,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 abstract class AbstractApplication
 {
-    protected WebApplicationFactory $factory;
+    protected WebApplicationFactoryInterface $factory;
     protected Config $config;
 
     public function __construct(WebApplicationFactoryInterface $factory, ConfigurationInterface $configuration)
