@@ -13,23 +13,19 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class WebApplication extends AbstractApplication implements SessionAwareInterface
 {
     use SessionAwareTrait;
-    protected int $id;
-    protected string $name;
-    protected string $type;
+
+    public string $title;
     public string $charSet = 'utf-8';
     public string $httpVersion = '1.1';
 
     protected Document $document;
     protected Router $router;
     protected Language $language;
-    public string $title;
 
-    public function __construct($name, $type, $title, $factory, ConfigurationInterface $configuration)
+    public function __construct($name, $title, $factory, ConfigurationInterface $configuration)
     {
-        parent::__construct($factory, $configuration);
+        parent::__construct($name, $factory, $configuration);
 
-        $this->name = $name;
-        $this->type = $type;
         $this->title = $title;
     }
 
@@ -44,11 +40,6 @@ class WebApplication extends AbstractApplication implements SessionAwareInterfac
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     public function getDir(): string

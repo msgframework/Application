@@ -7,11 +7,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 abstract class AbstractApplication
 {
+    protected string $name;
     protected WebApplicationFactoryInterface $factory;
     protected Config $config;
 
-    public function __construct(WebApplicationFactoryInterface $factory, ConfigurationInterface $configuration)
+    public function __construct(string $name, WebApplicationFactoryInterface $factory, ConfigurationInterface $configuration)
     {
+        $this->name = $name;
         $this->factory = $factory;
         $this->config = new Config($configuration, $this->factory->getCacheDir());
         $this->config->load('config', $this->getName() . 'Config', array($this->getDir() . "/config/"));
