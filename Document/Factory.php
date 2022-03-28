@@ -2,7 +2,7 @@
 
 namespace Msgframework\Lib\Document;
 
-use Msgframework\Lib\Application\WebApplication;
+use Msgframework\Lib\Application\WebApplicationInterface;
 
 /**
  * Default factory for creating Document objects
@@ -15,7 +15,7 @@ class Factory implements FactoryInterface
     /**
      * Creates a new Document object for WebApplication in the requested format.
      *
-     * @param WebApplication $application
+     * @param WebApplicationInterface $application
      * @param string $type The document type to instantiate
      * @param array $attributes Array of attributes
      *
@@ -23,7 +23,7 @@ class Factory implements FactoryInterface
      *
      * @since  1.0.0
      */
-	public function createDocument(WebApplication $application, string $type = 'html', array $attributes = []): Document
+	public function createDocument(WebApplicationInterface $application, string $type = 'html', array $attributes = []): Document
 	{
 		$type  = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		$ntype = null;
