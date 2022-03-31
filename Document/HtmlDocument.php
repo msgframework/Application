@@ -679,7 +679,7 @@ class HtmlDocument extends Document
     {
         $this->_mime = strtolower($type);
 
-        //$this->setMetaData('content-type', $type . '; charset=' . $this->_charset, true);
+        $this->setMetaData('content-type', $type . '; charset=' . $this->_charset, 'http-equiv');
 
         return $this;
     }
