@@ -7,7 +7,7 @@ namespace Msgframework\Lib\Document\Feed;
 /**
  * Data object representing a feed enclosure
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class FeedEnclosure
 {
@@ -19,7 +19,7 @@ class FeedEnclosure
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $url = '';
+	public string $url = '';
 
 	/**
 	 * Length enclosure element
@@ -29,7 +29,7 @@ class FeedEnclosure
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $length = '';
+	public string $length = '';
 
 	/**
 	 * Type enclosure element
@@ -39,5 +39,5 @@ class FeedEnclosure
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $type = '';
+	public string $type = '';
 }
