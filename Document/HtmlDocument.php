@@ -666,12 +666,10 @@ class HtmlDocument extends Document
      * ({@link https://www.w3.org/TR/xhtml-media-types/
      * https://www.w3.org/TR/xhtml-media-types/}) for more details.
      *
-     * @param   string   $type  The document type to be sent
-     * @param   boolean  $sync  Should the type be synced with HTML?
-     *
+     * @param string $type The document type to be sent
      * @return  self
      *
-     * @since  1.1.0
+     * @since  1.0.0
      *
      * @link    https://www.w3.org/TR/xhtml-media-types/
      */
