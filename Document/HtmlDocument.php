@@ -520,22 +520,22 @@ class HtmlDocument extends Document
         return parent::$_buffer[$type][$name];
     }
 
-	/**
-	 * Set the contents a document includes
-	 *
-	 * @param   string  $content  The content to be set in the buffer.
-	 * @param   array   $options  Array of optional elements.
-	 *
-	 * @return  self
-	 *
-	 * @since  1.0.0
-	 */
-	public function setBuffer(string $content, array $options = array()): self
-	{
-		parent::$_buffer[$options['type']][$options['name']] = $content;
+    /**
+     * Set the contents a document includes
+     *
+     * @param string $content The content to be set in the buffer.
+     * @param array $options Array of optional elements.
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setBuffer(string $content, array $options = array()): self
+    {
+        parent::$_buffer[$options['type']][$options['name']] = $content;
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * Outputs the template to the browser.
