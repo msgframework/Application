@@ -401,28 +401,28 @@ class HtmlDocument extends Document
         return $this;
     }
 
-	/**
-	 * Adds a shortcut icon (favicon)
-	 *
-	 * This adds a link to the icon shown in the favorites list or on
-	 * the left of the url in the address bar. Some browsers display
-	 * it on the tab, as well.
-	 *
-	 * @param   string  $href      The link that is being related.
-	 * @param   string  $type      File type
-	 * @param   string  $relation  Relation of link
-	 *
-	 * @return  HtmlDocument instance of $this to allow chaining
-	 *
-	 * @since  1.0.0
-	 */
-	public function addFavicon($href, $type = 'image/vnd.microsoft.icon', $relation = 'shortcut icon')
-	{
-		$href = str_replace('\\', '/', $href);
-		$this->addHeadLink($href, $relation, 'rel', array('type' => $type));
+    /**
+     * Adds a shortcut icon (favicon)
+     *
+     * This adds a link to the icon shown in the favorites list or on
+     * the left of the url in the address bar. Some browsers display
+     * it on the tab, as well.
+     *
+     * @param string $href The link that is being related.
+     * @param string $type File type
+     * @param string $relation Relation of link
+     *
+     * @return $this instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function addFavicon(string $href, string $type = 'image/vnd.microsoft.icon', string $relation = 'shortcut icon'): self
+    {
+        $href = str_replace('\\', '/', $href);
+        $this->addHeadLink($href, $relation, 'rel', array('type' => $type));
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * Adds a custom HTML string to the head block
