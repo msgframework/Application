@@ -181,11 +181,12 @@ class FeedDocument extends Document
         parent::__construct($factory, $application, $options);
 
 		// Set document type
-		$this->_type = 'feed';
+        $this->setType('feed');
 
 		// Gets and sets timezone offset from site configuration
-		$this->lastBuildDate = Cms::getDate();
-		$this->lastBuildDate->setTimezone(new \DateTimeZone($this->getApplication()->get('offset', 'UTC')));
+        $config = $this->getApplication()->getConfig();
+        $tz = new \DateTimeZone($config->get('offset', 'UTC'));
+		$this->lastBuildDate = new Date('now', $tz);
 	}
 
     /**
