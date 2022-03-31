@@ -80,12 +80,19 @@ class HtmlDocument extends Document
     private bool $html5 = true;
 
     /**
-     * Document title
-     *
-     * @var    string
-     * @since  1.7.0
+     * Meta Description tag value.
+     * @var string
+     * @since  1.0.0
      */
-    public string $title = '';
+    protected string $description;
+
+    /**
+     * Array of meta tags
+     *
+     * @var    array
+     * @since  1.0.0
+     */
+    public array $_metaTags = array();
 
     /**
      * Preload manager
@@ -158,32 +165,26 @@ class HtmlDocument extends Document
 		$this->setMimeEncoding('text/html');
 	}
 
-	/**
-	 * Get the HTML document head data
-	 *
-	 * @return  array  The document head data in array form
-	 *
-	 * @since  1.0.0
-	 */
-	public function getHeadData()
-	{
-		$data = array();
-		$data['title']         = $this->title;
-		$data['description']   = $this->description;
-		$data['link']          = $this->link;
-		$data['metaTags']      = $this->_metaTags;
-		$data['links']         = $this->_links;
-		$data['styleSheets']   = $this->_styleSheets;
-		$data['style']         = $this->_style;
-		$data['scripts']       = $this->_scripts;
-		$data['script']        = $this->_script;
-		$data['custom']        = $this->_custom;
+    /**
+     * Get the HTML document head data
+     *
+     * @return  array  The document head data in array form
+     *
+     * @since  1.0.0
+     */
+    public function getHeadData(): array
+    {
+        $data = array();
+        $data['title'] = $this->title;
+        $data['description'] = $this->description;
+        $data['link'] = $this->link;
+        $data['metaTags'] = $this->_metaTags;
+        $data['links'] = $this->_links;
+        $data['custom'] = $this->_custom;
 
-		$data['scriptOptions'] = $this->scriptOptions;
-
-		// Get Asset manager state
-		$wa      = $this->getWebAssetManager();
-		$waState = $wa->getManagerState();
+        // Get Asset manager state
+        $wa = $this->getWebAssetManager();
+        $waState = $wa->getManagerState();
 
 		// Get asset objects and filter only manually added/enabled assets,
 		// Dependencies will be picked up from registry files
@@ -208,214 +209,146 @@ class HtmlDocument extends Document
 		return $data;
 	}
 
-	/**
-	 * Reset the HTML document head data
-	 *
-	 * @param   mixed  $types  type or types of the heads elements to reset
-	 *
-	 * @return  HtmlDocument  instance of $this to allow chaining
-	 *
-	 * @since  1.0.0
-	 */
-	public function resetHeadData($types = null)
-	{
-		if (\is_null($types))
-		{
-			$this->title         = '';
-			$this->description   = '';
-			$this->link          = '';
-			$this->_metaTags     = array();
-			$this->_links        = array();
-			$this->_styleSheets  = array();
-			$this->_style        = array();
-			$this->_scripts      = array();
-			$this->_script       = array();
-			$this->_custom       = array();
-			$this->scriptOptions = array();
-		}
+    /**
+     * Reset the HTML document head data
+     *
+     * @param mixed $types type or types of the heads elements to reset
+     *
+     * @return  $this  instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function resetHeadData($types = null): self
+    {
+        if (\is_null($types)) {
+            $this->title = '';
+            $this->description = '';
+            $this->link = '';
+            $this->_metaTags = array();
+            $this->_links = array();
+            $this->_custom = array();
+        }
 
-		if (\is_array($types))
-		{
-			foreach ($types as $type)
-			{
-				$this->resetHeadDatum($type);
-			}
-		}
+        if (\is_array($types)) {
+            foreach ($types as $type) {
+                $this->resetHeadDatum($type);
+            }
+        }
 
-		if (\is_string($types))
-		{
-			$this->resetHeadDatum($types);
-		}
+        if (\is_string($types)) {
+            $this->resetHeadDatum($types);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Reset a part the HTML document head data
-	 *
-	 * @param   string  $type  type of the heads elements to reset
-	 *
-	 * @return  void
-	 *
-	 * @since  1.0.0
-	 */
-	private function resetHeadDatum($type)
-	{
-		switch ($type)
-		{
-			case 'title':
-			case 'description':
-			case 'link':
-				$this->{$type} = '';
-				break;
+    /**
+     * Reset a part the HTML document head data
+     *
+     * @param string $type type of the heads elements to reset
+     *
+     * @return  void
+     *
+     * @since  1.0.0
+     */
+    private function resetHeadDatum(string $type)
+    {
+        switch ($type) {
+            case 'title':
+            case 'description':
+            case 'link':
+                $this->{$type} = '';
+                break;
 
-			case 'metaTags':
-			case 'links':
-			case 'styleSheets':
-			case 'style':
-			case 'scripts':
-			case 'script':
-			case 'custom':
-				$realType = '_' . $type;
-				$this->{$realType} = array();
-				break;
+            case 'metaTags':
+            case 'links':
+            case 'custom':
+                $realType = '_' . $type;
+                $this->{$realType} = array();
+                break;
+        }
+    }
 
-			case 'scriptOptions':
-				$this->{$type} = array();
-				break;
-		}
-	}
+    /**
+     * Set the HTML document head data
+     *
+     * @param array $data The document head data in array form
+     *
+     * @return $this instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function setHeadData(array $data): self
+    {
+        if (empty($data)) {
+            return $this;
+        }
 
-	/**
-	 * Set the HTML document head data
-	 *
-	 * @param   array  $data  The document head data in array form
-	 *
-	 * @return  HtmlDocument|null instance of $this to allow chaining or null for empty input data
-	 *
-	 * @since  1.0.0
-	 */
-	public function setHeadData($data)
-	{
-		if (empty($data) || !\is_array($data))
-		{
-			return null;
-		}
+        $this->title = $data['title'] ?? $this->title;
+        $this->description = $data['description'] ?? $this->description;
+        $this->link = $data['link'] ?? $this->link;
+        $this->_metaTags = $data['metaTags'] ?? $this->_metaTags;
+        $this->_links = $data['links'] ?? $this->_links;
+        $this->_custom = $data['custom'] ?? $this->_custom;
 
-		$this->title         = $data['title'] ?? $this->title;
-		$this->description   = $data['description'] ?? $this->description;
-		$this->link          = $data['link'] ?? $this->link;
-		$this->_metaTags     = $data['metaTags'] ?? $this->_metaTags;
-		$this->_links        = $data['links'] ?? $this->_links;
-		$this->_styleSheets  = $data['styleSheets'] ?? $this->_styleSheets;
-		$this->_style        = $data['style'] ?? $this->_style;
-		$this->_scripts      = $data['scripts'] ?? $this->_scripts;
-		$this->_script       = $data['script'] ?? $this->_script;
-		$this->_custom       = $data['custom'] ?? $this->_custom;
-		$this->scriptOptions = (isset($data['scriptOptions']) && !empty($data['scriptOptions'])) ? $data['scriptOptions'] : $this->scriptOptions;
+        // Restore asset manager state
+        $waManager = $this->getWebAssetManager();
 
-		// Restore asset manager state
-		$wa = $this->getWebAssetManager();
+        if (!empty($data['assetManager']['registryFiles'])) {
+            $waRegistry = $waManager->getRegistry();
 
-		if (!empty($data['assetManager']['registryFiles']))
-		{
-			$waRegistry = $wa->getRegistry();
+            foreach ($data['assetManager']['registryFiles'] as $registryFile) {
+                $waRegistry->addRegistryFile($registryFile);
+            }
+        }
 
-			foreach ($data['assetManager']['registryFiles'] as $registryFile)
-			{
-				$waRegistry->addRegistryFile($registryFile);
-			}
-		}
+        if (!empty($data['assetManager']['assets'])) {
+            foreach ($data['assetManager']['assets'] as $assetType => $assets) {
+                foreach ($assets as $asset) {
+                    $waManager->registerAsset($assetType, $asset)->useAsset($assetType, $asset->getName());
+                }
+            }
+        }
 
-		if (!empty($data['assetManager']['assets']))
-		{
-			foreach ($data['assetManager']['assets'] as $assetType => $assets)
-			{
-				foreach ($assets as $asset)
-				{
-					$wa->registerAsset($assetType, $asset)->useAsset($assetType, $asset->getName());
-				}
-			}
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Merge the HTML document head data
+     *
+     * @param array $data The document head data in array form
+     *
+     * @return  $this instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function mergeHeadData(array $data): self
+    {
+        if (empty($data)) {
+            return $this;
+        }
 
-	/**
-	 * Merge the HTML document head data
-	 *
-	 * @param   array  $data  The document head data in array form
-	 *
-	 * @return  HtmlDocument|null instance of $this to allow chaining or null for empty input data
-	 *
-	 * @since  1.0.0
-	 */
-	public function mergeHeadData($data)
-	{
-		if (empty($data) || !\is_array($data))
-		{
-			return;
-		}
+        $this->title = (isset($data['title']) && !empty($data['title']) && !stristr($this->title, $data['title']))
+            ? $this->title . $data['title']
+            : $this->title;
+        $this->description = (isset($data['description']) && !empty($data['description']) && !stristr($this->description, $data['description']))
+            ? $this->description . $data['description']
+            : $this->description;
+        $this->link = $data['link'] ?? $this->link;
 
-		$this->title = (isset($data['title']) && !empty($data['title']) && !stristr($this->title, $data['title']))
-			? $this->title . $data['title']
-			: $this->title;
-		$this->description = (isset($data['description']) && !empty($data['description']) && !stristr($this->description, $data['description']))
-			? $this->description . $data['description']
-			: $this->description;
-		$this->link = $data['link'] ?? $this->link;
+        if (isset($data['metaTags'])) {
+            foreach ($data['metaTags'] as $type1 => $data1) {
+                $attr = $type1 === 'http-equiv';
 
-		if (isset($data['metaTags']))
-		{
-			foreach ($data['metaTags'] as $type1 => $data1)
-			{
-				$booldog = $type1 === 'http-equiv';
+                foreach ($data1 as $name2 => $data2) {
+                    $this->setMetaData($name2, $data2, $attr);
+                }
+            }
+        }
 
-				foreach ($data1 as $name2 => $data2)
-				{
-					$this->setMetaData($name2, $data2, $booldog);
-				}
-			}
-		}
-
-		$this->_links = (isset($data['links']) && !empty($data['links']) && \is_array($data['links']))
-			? array_unique(array_merge($this->_links, $data['links']), SORT_REGULAR)
-			: $this->_links;
-		$this->_styleSheets = (isset($data['styleSheets']) && !empty($data['styleSheets']) && \is_array($data['styleSheets']))
-			? array_merge($this->_styleSheets, $data['styleSheets'])
-			: $this->_styleSheets;
-
-		if (isset($data['style']))
-		{
-			foreach ($data['style'] as $type => $styles)
-			{
-				foreach ($styles as $hash => $style)
-				{
-					if (!isset($this->_style[strtolower($type)][$hash]))
-					{
-						$this->addStyleDeclaration($style, $type);
-					}
-				}
-			}
-		}
-
-		$this->_scripts = (isset($data['scripts']) && !empty($data['scripts']) && \is_array($data['scripts']))
-			? array_merge($this->_scripts, $data['scripts'])
-			: $this->_scripts;
-
-		if (isset($data['script']))
-		{
-			foreach ($data['script'] as $type => $scripts)
-			{
-				foreach ($scripts as $hash => $script)
-				{
-					if (!isset($this->_script[strtolower($type)][$hash]))
-					{
-						$this->addScriptDeclaration($script, $type);
-					}
-				}
-			}
-		}
+        $this->_links = (isset($data['links']) && !empty($data['links']) && \is_array($data['links']))
+            ? array_unique(array_merge($this->_links, $data['links']), SORT_REGULAR)
+            : $this->_links;
 
 		$this->_custom = (isset($data['custom']) && !empty($data['custom']) && \is_array($data['custom']))
 			? array_unique(array_merge($this->_custom, $data['custom']))
@@ -456,30 +389,30 @@ class HtmlDocument extends Document
 		return $this;
 	}
 
-	/**
-	 * Adds `<link>` tags to the head of the document
-	 *
-	 * $relType defaults to 'rel' as it is the most common relation type used.
-	 * ('rev' refers to reverse relation, 'rel' indicates normal, forward relation.)
-	 * Typical tag: `<link href="index.php" rel="Start">`
-	 *
-	 * @param   string  $href      The link that is being related.
-	 * @param   string  $relation  Relation of link.
-	 * @param   string  $relType   Relation type attribute.  Either rel or rev (default: 'rel').
-	 * @param   array   $attribs   Associative array of remaining attributes.
-	 *
-	 * @return  HtmlDocument instance of $this to allow chaining
-	 *
-	 * @since  1.0.0
-	 */
-	public function addHeadLink($href, $relation, $relType = 'rel', $attribs = array())
-	{
-		$this->_links[$href]['relation'] = $relation;
-		$this->_links[$href]['relType'] = $relType;
-		$this->_links[$href]['attribs'] = $attribs;
+    /**
+     * Adds `<link>` tags to the head of the document
+     *
+     * $relType defaults to 'rel' as it is the most common relation type used.
+     * ('rev' refers to reverse relation, 'rel' indicates normal, forward relation.)
+     * Typical tag: `<link href="index.php" rel="Start">`
+     *
+     * @param string $href The link that is being related.
+     * @param string $relation Relation of link.
+     * @param string $relType Relation type attribute.  Either rel or rev (default: 'rel').
+     * @param array $attribs Associative array of remaining attributes.
+     *
+     * @return $this instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function addHeadLink(string $href, string $relation, string $relType = 'rel', array $attribs = array()): self
+    {
+        $this->_links[$href]['relation'] = $relation;
+        $this->_links[$href]['relType'] = $relType;
+        $this->_links[$href]['attribs'] = $attribs;
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * Adds a shortcut icon (favicon)
