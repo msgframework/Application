@@ -799,22 +799,76 @@ class HtmlDocument extends Document
      * @param TemplateInterface $template
      * @return $this
      */
-    public function setTitle(string $title): self
+    public function setTemplate(TemplateInterface $template): self
     {
-        $this->title = $title;
+        $this->template = $template;
 
         return $this;
     }
 
     /**
-     * Return the title of the document.
+     * Return link to Template object.
+     *
+     * @return TemplateInterface
+     */
+    public function getTemplate(): TemplateInterface
+    {
+        return $this->template;
+    }
+
+    /**
+     * Sets the document link
+     *
+     * @param   string  $url  A url
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setLink(string $url): self
+    {
+        $this->link = $url;
+
+        return $this;
+    }
+
+    /**
+     * Returns the document base url
+     *
+     * @return string
+     *
+     * @since  1.0.0
+     */
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    /**
+     * Sets the base URI of the document
+     *
+     * @param   string  $base  The base URI to be set
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setBase(string $base): self
+    {
+        $this->base = $base;
+
+        return $this;
+    }
+
+    /**
+     * Return the base URI of the document.
      *
      * @return  string
      *
-     * @since   1.1.0
+     * @since  1.0.0
      */
-    public function getTitle(): string
+    public function getBase(): string
     {
-        return $this->title;
+        return $this->base;
     }
 }
