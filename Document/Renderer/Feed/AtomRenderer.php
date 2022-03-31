@@ -15,7 +15,7 @@ use Msgframework\Lib\Language\Text;
  * for the feed or an author for every single feed item.
  *
  * @link   http://www.atomenabled.org/developers/syndication/atom-format-spec.php
- * @since  1.1.0
+ * @since  1.0.0
  *
  * @property-read  \Msgframework\Lib\Document\FeedDocument  $_doc  Reference to the Document object that instantiated the renderer
  */
@@ -29,19 +29,20 @@ class AtomRenderer extends DocumentRenderer
 	 */
 	protected string $_mime = 'application/atom+xml';
 
-	/**
-	 * Render the feed.
-	 *
-	 * @param   string  $name     The name of the element to render
-	 * @param   array   $params   Array of values
-	 * @param   string  $content  Override the output of the renderer
-	 *
-	 * @return  string  The output of the script
-	 *
-	 * @see     DocumentRenderer::render()
-	 * @since  1.0.0
-	 */
-	public function render($name = '', $params = null, $content = null):string
+    /**
+     * Render the feed.
+     *
+     * @param string $name The name of the element to render
+     * @param array|null $params Array of values
+     * @param string|null $content Override the output of the renderer
+     *
+     * @return  string  The output of the script
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     * @see     DocumentRenderer::render()
+     */
+	public function render(string $name = '', ?array $params = null, ?string $content = null): string
 	{
 		$app = Factory::getApplication();
 
