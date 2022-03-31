@@ -5,7 +5,7 @@ namespace Msgframework\Lib\Document\Feed;
 /**
  * Data object representing a feed item
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class FeedItem
 {
