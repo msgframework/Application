@@ -97,16 +97,16 @@ class HtmlDocument extends Document
     /**
      * Preload manager
      *
-     * @var    PreloadManagerInterface|null
-     * @since  1.1.0
+     * @var    PreloadManagerInterface
+     * @since  1.0.0
      */
-    protected ?PreloadManagerInterface $preloadManager = null;
+    protected PreloadManagerInterface $preloadManager;
 
     /**
      * The supported preload types
      *
      * @var    array
-     * @since  1.1.0
+     * @since  1.0.0
      */
     protected array $preloadTypes = ['preload', 'dns-prefetch', 'preconnect', 'prefetch', 'prerender'];
 
@@ -118,52 +118,55 @@ class HtmlDocument extends Document
      */
     protected WebAssetManager $webAssetManager;
 
-	/**
-	 * Class constructor
-	 *
-	 * @param array $options  Associative array of options
-	 *
-	 * @since  1.0.0
-	 */
-	public function __construct(FactoryInterface $factory, array $options = array())
-	{
-		parent::__construct($factory, $options);
+    /**
+     * Class constructor
+     *
+     * @param FactoryInterface $factory  Factory
+     * @param WebApplication $application  WebApplication
+     * @param array $options  Associative array of options
+     *
+     * @since  1.0.0
+     */
+    public function __construct(FactoryInterface $factory, WebApplication $application, array $options = array())
+    {
+        parent::__construct($factory, $application, $options);
 
-        if (\array_key_exists('template', $options))
-        {
+        if (\array_key_exists('template', $options)) {
             $this->setTemplate($options['template']);
-        }
-        else
-        {
-            $this->setPreloadManager(new PreloadManager);
+        } else {
+            throw new \InvalidArgumentException(sprintf('Missing required parameter "%s" for document "%s"', 'template', self::class));
         }
 
-        if (\array_key_exists('preloadManager', $options))
-        {
+        if (\array_key_exists('preloadManager', $options)) {
             $this->setPreloadManager($options['preloadManager']);
-        }
-        else
-        {
+        } else {
             $this->setPreloadManager(new PreloadManager);
         }
 
-        if (\array_key_exists('webAssetManager', $options))
-        {
+        if (\array_key_exists('webAssetManager', $options)) {
             $this->setWebAssetManager($options['webAssetManager']);
-        }
-        else
-        {
+        } else {
             $registry = new WebAssetRegistry('');
 
             $this->setWebAssetManager(new WebAssetManager($registry));
         }
 
-		// Set document type
-		$this->_type = 'html';
+        if (\array_key_exists('link', $options))
+        {
+            $this->setLink($options['link']);
+        }
 
-		// Set default mime type and document metadata (metadata syncs with mime type by default)
-		$this->setMimeEncoding('text/html');
-	}
+        if (\array_key_exists('base', $options))
+        {
+            $this->setBase($options['base']);
+        }
+
+        // Set document type
+        $this->setType('html');
+
+        // Set default mime type and document metadata (metadata syncs with mime type by default)
+        $this->setMimeEncoding('text/html');
+    }
 
     /**
      * Get the HTML document head data
