@@ -464,67 +464,61 @@ class HtmlDocument extends Document
     public function setHtml5(bool $state): void
     {
         $this->html5 = $state;
-	}
+    }
 
-	/**
-	 * Get the contents of a document include
-	 *
-	 * @param string|null $type     The type of renderer
-	 * @param string|null $name     The name of the element to render
-	 * @param array $attribs  Associative array of remaining attributes.
-	 *
-	 * @return  mixed|string The output of the renderer
-	 *
-	 * @since  1.0.0
-	 */
-	public function getBuffer(?string $type = null, ?string $name = null, array $attribs = array())
-	{
-		// If no type is specified, return the whole buffer
-		if ($type === null)
-		{
-			return parent::$_buffer;
-		}
+    /**
+     * Get the contents of a document include
+     *
+     * @param string|null $type The type of renderer
+     * @param string|null $name The name of the element to render
+     * @param array $attribs Associative array of remaining attributes.
+     *
+     * @return  mixed|string The output of the renderer
+     *
+     * @since  1.0.0
+     */
+    public function getBuffer(?string $type = null, ?string $name = null, array $attribs = array())
+    {
+        // If no type is specified, return the whole buffer
+        if ($type === null) {
+            return parent::$_buffer;
+        }
 
-		if (isset(parent::$_buffer[$type][$name]))
-		{
-			return parent::$_buffer[$type][$name];
-		}
+        if (isset(parent::$_buffer[$type][$name])) {
+            return parent::$_buffer[$type][$name];
+        }
 
-		$renderer = $this->loadRenderer($type);
+        $renderer = $this->loadRenderer($type);
 
-		if ($this->_caching == true && $type === 'modules' && $name !== 'debug')
-		{
-			/** @var  \Msgframework\Lib\Document\Renderer\Html\ModulesRenderer  $renderer */
-			$cache = \Cms::getCache('com_modules', '');
-			$hash = md5(serialize(array($name, $attribs, null, get_class($renderer))));
-			$cbuffer = $cache->get('cbuffer_' . $type);
+//        if ($this->_caching == true && $type === 'modules' && $name !== 'debug') {
+//            /** @var  \Msgframework\Lib\Document\Renderer\Html\ModulesRenderer $renderer */
+//            $cache = \Cms::getCache('com_modules', '');
+//            $hash = md5(serialize(array($name, $attribs, null, get_class($renderer))));
+//            $cbuffer = $cache->get('cbuffer_' . $type);
+//
+//            if (isset($cbuffer[$hash])) {
+//                return Cache::getWorkarounds($cbuffer[$hash], array('mergehead' => 1));
+//            }
+//
+//            $options = array();
+//            $options['nopathway'] = 1;
+//            $options['nomodules'] = 1;
+//            $options['modulemode'] = 1;
+//
+//            $this->setBuffer($renderer->render($name, $attribs, null), $type, $name);
+//            $data = parent::$_buffer[$type][$name][$title];
+//
+//            $tmpdata = Cache::setWorkarounds($data, $options);
+//
+//            $cbuffer[$hash] = $tmpdata;
+//
+//            $cache->store($cbuffer, 'cbuffer_' . $type);
+//        } else {
+//            $this->setBuffer($renderer->render($name, $attribs, null), array('type' => $type, 'name' => $name));
+//        }
 
-			if (isset($cbuffer[$hash]))
-			{
-				return Cache::getWorkarounds($cbuffer[$hash], array('mergehead' => 1));
-			}
-
-			$options = array();
-			$options['nopathway'] = 1;
-			$options['nomodules'] = 1;
-			$options['modulemode'] = 1;
-
-			$this->setBuffer($renderer->render($name, $attribs, null), $type, $name);
-			$data = parent::$_buffer[$type][$name][$title];
-
-			$tmpdata = Cache::setWorkarounds($data, $options);
-
-			$cbuffer[$hash] = $tmpdata;
-
-			$cache->store($cbuffer, 'cbuffer_' . $type);
-		}
-		else
-		{
-			$this->setBuffer($renderer->render($name, $attribs, null), array('type' => $type, 'name' => $name));
-		}
-
-		return parent::$_buffer[$type][$name];
-	}
+        return parent::$_buffer[$type][$name];
+    }
 
 	/**
 	 * Set the contents a document includes
