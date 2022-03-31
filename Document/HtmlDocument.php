@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * HtmlDocument class, provides an easy interface to parse and display a HTML document
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class HtmlDocument extends Document
 {
@@ -39,77 +39,45 @@ class HtmlDocument extends Document
      */
     public array $_links = array();
 
-	/**
-	 * Array of custom tags
-	 *
-	 * @var    array
-	 * @since  1.0.0
-	 */
-	public $_custom = array();
+    /**
+     * Array of custom tags
+     *
+     * @var    array
+     * @since  1.0.0
+     */
+    public array $_custom = array();
 
-	/**
-	 * Base url
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	public $baseurl = null;
+    /**
+     * Script nonce (string if set, null otherwise)
+     *
+     * @var    string|null
+     * @since  1.0.0
+     */
+    public ?string $cspNonce = null;
 
-	/**
-	 * Array of template parameters
-	 *
-	 * @var    array
-	 * @since  1.0.0
-	 */
-	public $params = null;
+    /**
+     * String holding parsed template
+     *
+     * @var    TemplateInterface
+     * @since  1.0.0
+     */
+    protected TemplateInterface $template;
 
-	/**
-	 * File name
-	 *
-	 * @var    array
-	 * @since  1.0.0
-	 */
-	public $_file = null;
+    /**
+     * Integer with caching setting
+     *
+     * @var    integer|null
+     * @since  1.0.0
+     */
+    protected ?int $_caching = null;
 
-	/**
-	 * Script nonce (string if set, null otherwise)
-	 *
-	 * @var    string|null
-	 * @since  1.0.0
-	 */
-	public $cspNonce = null;
-
-	/**
-	 * String holding parsed template
-	 *
-	 * @var    Template
-	 * @since  1.0.0
-	 */
-	protected Template $template;
-
-	/**
-	 * Array of parsed template JDoc tags
-	 *
-	 * @var    array
-	 * @since  1.0.0
-	 */
-	protected $_template_tags = array();
-
-	/**
-	 * Integer with caching setting
-	 *
-	 * @var    integer|null
-	 * @since  1.0.0
-	 */
-	protected ?int $_caching = null;
-
-	/**
-	 * Set to true when the document should be output as HTML5
-	 *
-	 * @var    boolean
-	 * @since  1.0.0
-	 */
-	private bool $html5 = true;
+    /**
+     * Set to true when the document should be output as HTML5
+     *
+     * @var    boolean
+     * @since  1.0.0
+     */
+    private bool $html5 = true;
 
     /**
      * Document title
@@ -138,10 +106,10 @@ class HtmlDocument extends Document
     /**
      * Web Asset instance
      *
-     * @var    WebAssetManager|null
-     * @since  1.1.0
+     * @var    WebAssetManager
+     * @since  1.0.0
      */
-    protected ?WebAssetManager $webAssetManager = null;
+    protected WebAssetManager $webAssetManager;
 
 	/**
 	 * Class constructor
