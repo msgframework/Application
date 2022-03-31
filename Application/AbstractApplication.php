@@ -19,8 +19,13 @@ abstract class AbstractApplication
         $this->config->load('config', $this->getName() . 'Config', array($this->getDir() . "/config/"));
     }
 
-    public function close($code = 0)
+    public function close($code = 0): void
     {
         exit($code);
+    }
+
+    public function getFactory(): WebApplicationFactoryInterface
+    {
+        return $this->factory;
     }
 }
