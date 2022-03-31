@@ -685,11 +685,11 @@ class HtmlDocument extends Document
     /**
      * Set the preload manager
      *
-     * @param   PreloadManagerInterface  $preloadManager  The preload manager service
+     * @param PreloadManagerInterface $preloadManager The preload manager service
      *
      * @return  self instance of $this to allow chaining
      *
-     * @since  1.1.0
+     * @since  1.0.0
      */
     public function setPreloadManager(PreloadManagerInterface $preloadManager): self
     {
@@ -703,7 +703,7 @@ class HtmlDocument extends Document
      *
      * @return  PreloadManagerInterface
      *
-     * @since  1.1.0
+     * @since  1.0.0
      */
     public function getPreloadManager(): PreloadManagerInterface
     {
