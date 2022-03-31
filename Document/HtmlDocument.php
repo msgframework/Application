@@ -2,8 +2,10 @@
 
 namespace Msgframework\Lib\Document;
 
+use Msgframework\Lib\Application\WebApplication;
 use Msgframework\Lib\AssetManager\WebAssetManager;
 use Msgframework\Lib\AssetManager\WebAssetRegistry;
+use Msgframework\Lib\Extension\TemplateInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\WebLink\HttpHeaderSerializer;
 
