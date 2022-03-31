@@ -424,45 +424,45 @@ class HtmlDocument extends Document
         return $this;
     }
 
-	/**
-	 * Adds a custom HTML string to the head block
-	 *
-	 * @param   string  $html  The HTML to add to the head
-	 *
-	 * @return  HtmlDocument instance of $this to allow chaining
-	 *
-	 * @since  1.0.0
-	 */
-	public function addCustomTag($html)
-	{
-		$this->_custom[] = trim($html);
+    /**
+     * Adds a custom HTML string to the head block
+     *
+     * @param string $html The HTML to add to the head
+     *
+     * @return  $this instance of $this to allow chaining
+     *
+     * @since  1.0.0
+     */
+    public function addCustomTag(string $html): self
+    {
+        $this->_custom[] = trim($html);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Returns whether the document is set up to be output as HTML5
-	 *
-	 * @return  boolean true when HTML5 is used
-	 *
-	 * @since  1.0.0
-	 */
-	public function isHtml5()
-	{
-		return $this->html5;
-	}
+    /**
+     * Returns whether the document is set up to be output as HTML5
+     *
+     * @return  boolean true when HTML5 is used
+     *
+     * @since  1.0.0
+     */
+    public function isHtml5(): bool
+    {
+        return $this->html5;
+    }
 
-	/**
-	 * Sets whether the document should be output as HTML5
-	 *
-	 * @param bool $state  True when HTML5 should be output
-	 *
-	 * @return  void
-	 *
-	 * @since  1.0.0
-	 */
-	public function setHtml5(bool $state): void
-	{
+    /**
+     * Sets whether the document should be output as HTML5
+     *
+     * @param bool $state True when HTML5 should be output
+     *
+     * @return  void
+     *
+     * @since  1.0.0
+     */
+    public function setHtml5(bool $state): void
+    {
         $this->html5 = $state;
 	}
 
