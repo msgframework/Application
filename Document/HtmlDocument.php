@@ -739,13 +739,65 @@ class HtmlDocument extends Document
     }
 
     /**
-     * Sets the title of the document
+     * Set the meta Description tag value of the document
      *
-     * @param   string  $title  The title to be set
+     * @param string $description The meta Description to be set
      *
      * @return  self instance of $this to allow chaining
      *
-     * @since   1.1.0
+     * @since   1.0.0
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Return the meta Description tag value of the document.
+     *
+     * @return  string
+     *
+     * @since   1.0.0
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Sets or alters a meta tag.
+     *
+     * @param string $name Name of the meta HTML tag
+     * @param mixed $content Value of the meta HTML tag as array or string
+     * @param string $attribute Attribute to use in the meta HTML tag
+     *
+     * @return  $this instance of $this to allow chaining
+     *
+     * @since   1.0.0
+     */
+    public function setMetaData(string $name, $content, string $attribute = 'name'): self
+    {
+        // Pop the element off the end of array if target function expects a string or this http_equiv parameter.
+        if (\is_array($content) && (\in_array($name, array('generator', 'description')) || !\is_string($attribute))) {
+            $content = array_pop($content);
+        }
+
+        if ($name === 'description') {
+            $this->setDescription($content);
+        } else {
+            $this->_metaTags[$attribute][$name] = $content;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set link to Template object.
+     *
+     * @param TemplateInterface $template
+     * @return $this
      */
     public function setTitle(string $title): self
     {
