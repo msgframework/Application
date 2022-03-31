@@ -7,7 +7,7 @@ namespace Msgframework\Lib\Document\Feed;
 /**
  * Data object representing a feed image
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class FeedImage
 {
@@ -19,7 +19,7 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $title = '';
+	public string $title = '';
 
 	/**
 	 * URL image attribute
@@ -29,7 +29,7 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $url = '';
+	public string $url = '';
 
 	/**
 	 * Link image attribute
@@ -39,7 +39,7 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $link = '';
+	public string $link = '';
 
 	/**
 	 * Width image attribute
@@ -49,7 +49,7 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $width;
+	public string $width;
 
 	/**
 	 * Title feed attribute
@@ -59,7 +59,7 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $height;
+	public string $height;
 
 	/**
 	 * Title feed attribute
@@ -69,5 +69,5 @@ class FeedImage
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $description;
+	public string $description;
 }
