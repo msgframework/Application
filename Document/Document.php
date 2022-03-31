@@ -78,14 +78,6 @@ class Document
 	public string $_mime = '';
 
 	/**
-	 * Document profile
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	public string $_profile = '';
-
-	/**
 	 * The document type
 	 *
 	 * @var    string|null
@@ -155,16 +147,6 @@ class Document
 		{
 			$this->setTab($options['tab']);
 		}
-
-		if (\array_key_exists('link', $options))
-		{
-			$this->setLink($options['link']);
-		}
-
-		if (\array_key_exists('base', $options))
-		{
-			$this->setBase($options['base']);
-		}
 	}
 
 	/**
@@ -220,36 +202,6 @@ class Document
 	public function setBuffer(string $content, array $options = array()): self
 	{
 		self::$_buffer = $content;
-
-		return $this;
-	}
-
-	/**
-	 * Add option for script
-	 *
-	 * @param   string  $key      Name in Storage
-	 * @param   mixed   $options  Scrip options as array or string
-	 * @param   bool    $merge    Whether merge with existing (true) or replace (false)
-	 *
-	 * @return  self
-	 *
-	 * @since  1.0.0
-	 */
-	public function addScriptOptions(string $key, $options, bool $merge = true): self
-	{
-		if (empty($this->scriptOptions[$key]))
-		{
-			$this->scriptOptions[$key] = array();
-		}
-
-		if ($merge && \is_array($options))
-		{
-			$this->scriptOptions[$key] = array_replace_recursive($this->scriptOptions[$key], $options);
-		}
-		else
-		{
-			$this->scriptOptions[$key] = $options;
-		}
 
 		return $this;
 	}
@@ -384,20 +336,20 @@ class Document
 	{
 		$this->link = $url;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Returns the document base url
-	 *
-	 * @return string
-	 *
-	 * @since  1.0.0
-	 */
-	public function getLink(): string
-	{
-		return $this->link;
-	}
+    /**
+     * Return the title of the document.
+     *
+     * @return  string
+     *
+     * @since   1.0.0
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 
 	/**
 	 * Sets the document modified date
@@ -546,20 +498,6 @@ class Document
 	public function loadRenderer(string $type): RendererInterface
 	{
 		return $this->factory->createRenderer($this, $type);
-	}
-
-	/**
-	 * Parses the document and prepares the buffers
-	 *
-	 * @param   array  $params  The array of parameters
-	 *
-	 * @return  Document instance of $this to allow chaining
-	 *
-	 * @since  1.0.0
-	 */
-	public function parse($params = array())
-	{
-		return $this;
 	}
 
     /**
