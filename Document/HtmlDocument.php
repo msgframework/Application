@@ -537,55 +537,55 @@ class HtmlDocument extends Document
         return $this;
     }
 
-	/**
-	 * Outputs the template to the browser.
-	 *
-	 * @param   boolean  $caching  If true, cache the output
-	 * @param array $params   Associative array of attributes
-	 *
-	 * @return  string The rendered data
-	 *
-	 * @since  1.0.0
-	 */
-	public function render(bool $caching = false, array $params = array()): Response
-	{
-        if (\array_key_exists('statusCode', $params))
-        {
+    /**
+     * Outputs the template to the browser.
+     *
+     * @param bool $cache
+     * @param array $params Associative array of attributes
+     *
+     * @return Response The rendered data
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     */
+    public function render(bool $cache = false, array $params = array()): Response
+    {
+        if (\array_key_exists('statusCode', $params)) {
             $statusCode = $params['statusCode'];
         } else {
             $statusCode = 200;
         }
 
-        if (\array_key_exists('tmpl', $params))
-        {
-            $file = $params['tmpl'].'.php';
+        if (\array_key_exists('tmpl', $params)) {
+            $file = $params['tmpl'] . '.php';
         } else {
             $file = 'index.php';
         }
 
-        $response = new Response($this->_loadTemplate($this->template->getDir(), $file), $statusCode);
+        $response = parent::render($cache, $params);
 
-        if (isset($params['maxAge']) && \array_key_exists('maxAge', $params))
-        {
+        $response->setContent($this->_loadTemplate($this->getTemplate()->getDir(), $file));
+        $response->setStatusCode($statusCode);
+
+
+        if (isset($params['maxAge']) && \array_key_exists('maxAge', $params)) {
             $response->setMaxAge($params['maxAge']);
         }
 
-        if (isset($params['sharedAge']) && \array_key_exists('sharedAge', $params))
-        {
+        if (isset($params['sharedAge']) && \array_key_exists('sharedAge', $params)) {
             $response->setSharedMaxAge($params['sharedAge']);
         }
 
-        if (isset($params['isPrivate']) && \array_key_exists('isPrivate', $params) && $params['isPrivate'] == true)
-        {
+        if (isset($params['isPrivate']) && \array_key_exists('isPrivate', $params) && $params['isPrivate'] == true) {
             $response->setPrivate();
         } elseif (!isset($params['isPrivate']) || false === $params['isPrivate'] || (null === $params['isPrivate'] && (null !== $params['maxAge'] || null !== $params['sharedAge']))) {
             $response->setPublic();
         }
 
-        //$this->preloadAssets();
+        $this->preloadAssets();
 
         return $response;
-	}
+    }
 
     /**
      * Generate the Link header for assets configured for preloading
