@@ -10,10 +10,18 @@ use Msgframework\Lib\Application\WebApplication;
 /**
  * FeedDocument class, provides an easy interface to parse and display any feed document
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class FeedDocument extends Document
 {
+    /**
+     * FeedDocument full URL
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $link = '';
+
 	/**
 	 * Syndication URL feed element
 	 *
@@ -22,17 +30,17 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $syndicationURL = '';
+	public string $syndicationURL = '';
 
 	/**
 	 * Image feed element
 	 *
 	 * optional
 	 *
-	 * @var    FeedImage
+	 * @var    FeedImage|null
 	 * @since  1.0.0
 	 */
-	public $image = null;
+	public ?FeedImage $image = null;
 
 	/**
 	 * Copyright feed element
@@ -42,7 +50,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $copyright = '';
+	public string $copyright = '';
 
 	/**
 	 * Published date feed element
@@ -52,7 +60,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $pubDate = '';
+	public string $pubDate = '';
 
 	/**
 	 * Lastbuild date feed element
@@ -60,7 +68,7 @@ class FeedDocument extends Document
 	 * @var    Date
 	 * @since  1.0.0
 	 */
-	public $lastBuildDate;
+	public Date $lastBuildDate;
 
 	/**
 	 * Editor feed element
@@ -70,7 +78,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $editor = '';
+	public string $editor = '';
 
 	/**
 	 * Docs feed element
@@ -78,7 +86,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $docs = '';
+	public string $docs = '';
 
 	/**
 	 * Editor email feed element
@@ -88,7 +96,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $editorEmail = '';
+	public string $editorEmail = '';
 
 	/**
 	 * Webmaster email feed element
@@ -98,7 +106,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $webmaster = '';
+	public string $webmaster = '';
 
 	/**
 	 * Category feed element
@@ -108,7 +116,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $category = '';
+	public string $category = '';
 
 	/**
 	 * TTL feed attribute
@@ -118,7 +126,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $ttl = '';
+	public string $ttl = '';
 
 	/**
 	 * Rating feed element
@@ -128,7 +136,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $rating = '';
+	public string $rating = '';
 
 	/**
 	 * Skiphours feed element
@@ -138,7 +146,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $skipHours = '';
+	public string $skipHours = '';
 
 	/**
 	 * Skipdays feed element
@@ -148,7 +156,7 @@ class FeedDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	public $skipDays = '';
+	public string $skipDays = '';
 
 	/**
 	 * The feed items collection
@@ -156,15 +164,18 @@ class FeedDocument extends Document
 	 * @var    FeedItem[]
 	 * @since  1.0.0
 	 */
-	public $items = array();
+	public array $items = array();
 
-	/**
-	 * Class constructor
-	 *
-	 * @param   array  $options  Associative array of options
-	 *
-	 * @since  1.0.0
-	 */
+    /**
+     * Class constructor
+     *
+     * @param FactoryInterface $factory Factory
+     * @param WebApplication $application WebApplication
+     * @param array $options Associative array of options
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     */
     public function __construct(FactoryInterface $factory, WebApplication $application, array $options = array())
     {
         parent::__construct($factory, $application, $options);
@@ -177,19 +188,20 @@ class FeedDocument extends Document
 		$this->lastBuildDate->setTimezone(new \DateTimeZone($this->getApplication()->get('offset', 'UTC')));
 	}
 
-	/**
-	 * Render the document
-	 *
-	 * @param   boolean  $cache   If true, cache the output
-	 * @param   array    $params  Associative array of attributes
-	 *
-	 * @return  string The rendered data
-	 *
-	 * @since  1.0.0
-	 * @throws  \Exception
-	 * @todo    Make this cacheable
-	 */
-	public function render($cache = false, $params = array())
+    /**
+     * Render the document
+     *
+     * @param boolean $cache If true, cache the output
+     * @param array $params Associative array of attributes
+     *
+     * @return Response The rendered data
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     * @todo    Make this cacheable
+     * @todo    Refactoring render stylesheets attachments
+     */
+	public function render(bool $cache = false, array $params = array()): Response
 	{
 		// Get the feed type
 		$type = Cms::getApplication()->input->get('type', 'rss');
@@ -228,11 +240,11 @@ class FeedDocument extends Document
 	 *
 	 * @param   FeedItem  $item  The feeditem to add to the feed.
 	 *
-	 * @return  FeedDocument  instance of $this to allow chaining
+	 * @return  $this  instance of $this to allow chaining
 	 *
 	 * @since  1.0.0
 	 */
-	public function addItem(FeedItem $item)
+	public function addItem(FeedItem $item): self
 	{
 		$item->source = $this->link;
 		$this->items[] = $item;
