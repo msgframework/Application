@@ -592,7 +592,7 @@ class HtmlDocument extends Document
      *
      * @return  void
      *
-     * @since  1.1.0
+     * @since  1.0.0
      */
     protected function preloadAssets()
     {
@@ -631,35 +631,31 @@ class HtmlDocument extends Document
         }
     }
 
-	/**
-	 * Load a template file
-	 *
-	 * @param string $directory  The name of the template
-	 * @param string $filename   The actual filename
-	 *
-	 * @return  string  The contents of the template
-	 *
-	 * @since  1.0.0
-	 */
-	protected function _loadTemplate(string $directory, string $filename): string
+    /**
+     * Load a template file
+     *
+     * @param string $directory The name of the template
+     * @param string $filename The actual filename
+     *
+     * @return  string  The contents of the template
+     *
+     * @since  1.0.0
+     */
+    protected function _loadTemplate(string $directory, string $filename): string
     {
-		$contents = '';
+        $contents = '';
 
-		// Check to see if we have a valid template file
-		if (is_file($directory . '/' . $filename))
-		{
-			// Store the file path
-			$this->_file = $directory . '/' . $filename;
+        // Check to see if we have a valid template file
+        if (is_file($directory . '/' . $filename)) {
+            // Get the file content
+            ob_start();
+            require $directory . '/' . $filename;
+            $contents = ob_get_contents();
+            ob_end_clean();
+        }
 
-			// Get the file content
-			ob_start();
-			require $directory . '/' . $filename;
-			$contents = ob_get_contents();
-			ob_end_clean();
-		}
-
-		return $contents;
-	}
+        return $contents;
+    }
 
     /**
      * Sets the document MIME encoding that is sent to the browser.
