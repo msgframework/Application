@@ -7,7 +7,7 @@ use Msgframework\Lib\Application\WebApplication;
 /**
  * Interface defining a factory which can create Document objects
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 interface FactoryInterface
 {
