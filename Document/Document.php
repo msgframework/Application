@@ -9,7 +9,7 @@ use Msgframework\Lib\Date\Date;
 /**
  * Document class, provides an easy interface to parse and display a document
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class Document
 {
@@ -97,7 +97,7 @@ class Document
 	 * The document type
 	 *
 	 * @var    string|null
-     * @since  1.1.0
+     * @since  1.0.0
 	 */
 	public ?string $_type = null;
 
@@ -579,7 +579,7 @@ class Document
      * @return Response The rendered data
      *
      * @throws \Exception
-     * @since  1.1.0
+     * @since  1.0.0
      */
 	public function render(bool $cache = false, array $params = array()): Response
 	{
