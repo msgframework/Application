@@ -189,28 +189,25 @@ class HtmlDocument extends Document
         $wa = $this->getWebAssetManager();
         $waState = $wa->getManagerState();
 
-		// Get asset objects and filter only manually added/enabled assets,
-		// Dependencies will be picked up from registry files
-		$waState['assets'] = [];
+        // Get asset objects and filter only manually added/enabled assets,
+        // Dependencies will be picked up from registry files
+        $waState['assets'] = [];
 
-		foreach ($waState['activeAssets'] as $assetType => $assetNames)
-		{
-			foreach ($assetNames as $assetName => $assetState)
-			{
-				if ($assetState === WebAssetManager::ASSET_STATE_ACTIVE)
-				{
-					$waState['assets'][$assetType][] = $wa->getAsset($assetType, $assetName);
-				}
-			}
-		}
+        foreach ($waState['activeAssets'] as $assetType => $assetNames) {
+            foreach ($assetNames as $assetName => $assetState) {
+                if ($assetState === WebAssetManager::ASSET_STATE_ACTIVE) {
+                    $waState['assets'][$assetType][] = $wa->getAsset($assetType, $assetName);
+                }
+            }
+        }
 
-		// We have loaded asset objects, now can remove unused stuff
-		unset($waState['activeAssets']);
+        // We have loaded asset objects, now can remove unused stuff
+        unset($waState['activeAssets']);
 
-		$data['assetManager'] = $waState;
+        $data['assetManager'] = $waState;
 
-		return $data;
-	}
+        return $data;
+    }
 
     /**
      * Reset the HTML document head data
@@ -353,44 +350,31 @@ class HtmlDocument extends Document
             ? array_unique(array_merge($this->_links, $data['links']), SORT_REGULAR)
             : $this->_links;
 
-		$this->_custom = (isset($data['custom']) && !empty($data['custom']) && \is_array($data['custom']))
-			? array_unique(array_merge($this->_custom, $data['custom']))
-			: $this->_custom;
+        $this->_custom = (isset($data['custom']) && !empty($data['custom']) && \is_array($data['custom']))
+            ? array_unique(array_merge($this->_custom, $data['custom']))
+            : $this->_custom;
 
-		if (!empty($data['scriptOptions']))
-		{
-			foreach ($data['scriptOptions'] as $key => $scriptOptions)
-			{
-				$this->addScriptOptions($key, $scriptOptions, true);
-			}
-		}
+        // Restore asset manager state
+        $waManager = $this->getWebAssetManager();
 
-		// Restore asset manager state
-		$wa = $this->getWebAssetManager();
+        if (!empty($data['assetManager']['registryFiles'])) {
+            $waRegistry = $waManager->getRegistry();
 
-		if (!empty($data['assetManager']['registryFiles']))
-		{
-			$waRegistry = $wa->getRegistry();
+            foreach ($data['assetManager']['registryFiles'] as $registryFile) {
+                $waRegistry->addRegistryFile($registryFile);
+            }
+        }
 
-			foreach ($data['assetManager']['registryFiles'] as $registryFile)
-			{
-				$waRegistry->addRegistryFile($registryFile);
-			}
-		}
+        if (!empty($data['assetManager']['assets'])) {
+            foreach ($data['assetManager']['assets'] as $assetType => $assets) {
+                foreach ($assets as $asset) {
+                    $waManager->registerAsset($assetType, $asset)->useAsset($assetType, $asset->getName());
+                }
+            }
+        }
 
-		if (!empty($data['assetManager']['assets']))
-		{
-			foreach ($data['assetManager']['assets'] as $assetType => $assets)
-			{
-				foreach ($assets as $asset)
-				{
-					$wa->registerAsset($assetType, $asset)->useAsset($assetType, $asset->getName());
-				}
-			}
-		}
-
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      * Adds `<link>` tags to the head of the document
