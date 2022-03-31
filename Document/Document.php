@@ -13,21 +13,13 @@ use Msgframework\Lib\Date\Date;
  */
 class Document
 {
-	/**
-	 * Document full URL
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	public string $link = '';
-
-	/**
-	 * Document base URL
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	public string $base = '';
+    /**
+     * Document title
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $title = '';
 
 	/**
 	 * Contains the document language setting

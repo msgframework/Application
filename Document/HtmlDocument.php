@@ -14,13 +14,29 @@ use Symfony\Component\WebLink\HttpHeaderSerializer;
  */
 class HtmlDocument extends Document
 {
-	/**
-	 * Array of Header `<link>` tags
-	 *
-	 * @var    array
-	 * @since  1.0.0
-	 */
-	public $_links = array();
+    /**
+     * HtmlDocument full URL
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $link = '';
+
+    /**
+     * HtmlDocument base URL
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $base = '';
+
+    /**
+     * Array of Header `<link>` tags
+     *
+     * @var    array
+     * @since  1.0.0
+     */
+    public array $_links = array();
 
 	/**
 	 * Array of custom tags
