@@ -713,11 +713,11 @@ class HtmlDocument extends Document
     /**
      * Set WebAsset manager
      *
-     * @param   WebAssetManager  $webAsset  The WebAsset instance
+     * @param WebAssetManager $webAsset The WebAsset instance
      *
-     * @return  Document
+     * @return  $this
      *
-     * @since   4.0.0
+     * @since   1.0.0
      */
     public function setWebAssetManager(WebAssetManager $webAsset): self
     {
@@ -731,7 +731,7 @@ class HtmlDocument extends Document
      *
      * @return  WebAssetManager
      *
-     * @since   4.0.0
+     * @since   1.0.0
      */
     public function getWebAssetManager(): WebAssetManager
     {
