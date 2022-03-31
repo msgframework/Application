@@ -7,7 +7,6 @@ use Msgframework\Lib\AssetManager\WebAssetManager;
 use Msgframework\Lib\AssetManager\WebAssetRegistry;
 use Msgframework\Lib\Extension\TemplateInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\WebLink\HttpHeaderSerializer;
 
 /**
  * HtmlDocument class, provides an easy interface to parse and display a HTML document
@@ -715,62 +714,38 @@ class HtmlDocument extends Document
      */
     protected function preloadAssets()
     {
-        // Process stylesheets first
-        foreach ($this->_styleSheets as $link => $properties)
-        {
-            if (empty($properties['options']['preload']))
-            {
-                continue;
-            }
+        $waManager = $this->getWebAssetManager();
 
-            foreach ($properties['options']['preload'] as $preloadMethod)
-            {
-                // Make sure the preload method is supported, special case for `dns-prefetch` to convert it to the right method name
-                if ($preloadMethod === 'dns-prefetch')
-                {
-                    $this->getPreloadManager()->dnsPrefetch($link);
-                }
-                elseif (\in_array($preloadMethod, $this->preloadTypes))
-                {
-                    $this->getPreloadManager()->$preloadMethod($link);
-                }
-                else
-                {
-                    throw new \InvalidArgumentException(sprintf('The "%s" method is not supported for preloading.', $preloadMethod), 500);
+        // Process stylesheets first
+        foreach ($waManager->getAssets('style', true) as $key => $item) {
+            if (null !== $item->getOption('preload', null)) {
+                foreach ($item->getOption('preload', null) as $preloadMethod) {
+                    // Make sure the preload method is supported, special case for `dns-prefetch` to convert it to the right method name
+                    if ($preloadMethod === 'dns-prefetch') {
+                        $this->getPreloadManager()->dnsPrefetch($item->getUri());
+                    } elseif (\in_array($preloadMethod, $this->preloadTypes)) {
+                        $this->getPreloadManager()->$preloadMethod($item->getUri());
+                    } else {
+                        throw new \InvalidArgumentException(sprintf('The "%s" method is not supported for preloading.', $preloadMethod), 500);
+                    }
                 }
             }
         }
 
         // Now process scripts
-        foreach ($this->_scripts as $link => $properties)
-        {
-            if (empty($properties['options']['preload']))
-            {
-                continue;
-            }
-
-            foreach ($properties['options']['preload'] as $preloadMethod)
-            {
-                // Make sure the preload method is supported, special case for `dns-prefetch` to convert it to the right method name
-                if ($preloadMethod === 'dns-prefetch')
-                {
-                    $this->getPreloadManager()->dnsPrefetch($link);
-                }
-                elseif (\in_array($preloadMethod, $this->preloadTypes))
-                {
-                    $this->getPreloadManager()->$preloadMethod($link);
-                }
-                else
-                {
-                    throw new \InvalidArgumentException(sprintf('The "%s" method is not supported for preloading.', $preloadMethod), 500);
+        foreach ($waManager->getAssets('script', true) as $key => $item) {
+            if (null !== $item->getOption('preload', null)) {
+                foreach ($item->getOption('preload', null) as $preloadMethod) {
+                    // Make sure the preload method is supported, special case for `dns-prefetch` to convert it to the right method name
+                    if ($preloadMethod === 'dns-prefetch') {
+                        $this->getPreloadManager()->dnsPrefetch($item->getUri());
+                    } elseif (\in_array($preloadMethod, $this->preloadTypes)) {
+                        $this->getPreloadManager()->$preloadMethod($item->getUri());
+                    } else {
+                        throw new \InvalidArgumentException(sprintf('The "%s" method is not supported for preloading.', $preloadMethod), 500);
+                    }
                 }
             }
-        }
-
-        // Check if the manager's provider has links, if so add the Link header
-        if ($links = $this->getPreloadManager()->getLinkProvider()->getLinks())
-        {
-            \Cms::getApplication()->setHeader('Link', (new HttpHeaderSerializer)->serialize($links));
         }
     }
 
