@@ -252,4 +252,20 @@ class FeedDocument extends Document
 
 		return $this;
 	}
+
+    /**
+     * Sets the document link
+     *
+     * @param   string  $url  A url
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setLink(string $url): self
+    {
+        $this->link = $url;
+
+        return $this;
+    }
 }
