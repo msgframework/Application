@@ -6,17 +6,17 @@ namespace Msgframework\Lib\Document;
 /**
  * Abstract class for a renderer
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 abstract class DocumentRenderer implements RendererInterface
 {
 	/**
 	 * Reference to the Document object that instantiated the renderer
 	 *
-	 * @var    Document
+	 * @var    HtmlDocument
 	 * @since  1.0.0
 	 */
-	protected Document $_doc;
+	protected HtmlDocument $_doc;
 
 	/**
 	 * Renderer mime type
@@ -29,11 +29,11 @@ abstract class DocumentRenderer implements RendererInterface
 	/**
 	 * Class constructor
 	 *
-	 * @param   Document  $doc  A reference to the Document object that instantiated the renderer
+	 * @param   HtmlDocument  $doc  A reference to the Document object that instantiated the renderer
 	 *
 	 * @since  1.0.0
 	 */
-	public function __construct(Document $doc)
+	public function __construct(HtmlDocument $doc)
 	{
 		$this->_doc = $doc;
 	}
