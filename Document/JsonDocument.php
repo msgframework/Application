@@ -2,15 +2,14 @@
 
 namespace Msgframework\Lib\Document;
 
-
-
-use \Cms as Cms;
+use Msgframework\Lib\Application\WebApplication;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * JsonDocument class, provides an easy interface to parse and display JSON output
  *
  * @link   http://www.json.org/
- * @since  1.1.0
+ * @since  1.0.0
  */
 class JsonDocument extends Document
 {
@@ -20,18 +19,20 @@ class JsonDocument extends Document
 	 * @var    string
 	 * @since  1.0.0
 	 */
-	protected $_name = 'joomla';
+	protected string $_name = 'JsonDocument';
 
 	/**
 	 * Class constructor
 	 *
-	 * @param   array  $options  Associative array of options
-	 *
-	 * @since  1.0.0
-	 */
-    public function __construct(FactoryInterface $factory, array $options = array())
+     * @param FactoryInterface $factory  Factory
+     * @param WebApplication $application  WebApplication
+     * @param array $options  Associative array of options
+     *
+     * @since  1.0.0
+     */
+    public function __construct(FactoryInterface $factory, WebApplication $application, array $options = array())
     {
-        parent::__construct($factory, $options);
+        parent::__construct($factory, $application, $options);
 
 		// Set mime type
 		if (isset($_SERVER['HTTP_ACCEPT'])
@@ -47,7 +48,7 @@ class JsonDocument extends Document
 		}
 
 		// Set document type
-		$this->_type = 'json';
+		$this->setType('json');
 	}
 
 	/**
