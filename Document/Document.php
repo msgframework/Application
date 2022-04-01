@@ -282,50 +282,6 @@ class Document
 		return $this->direction;
 	}
 
-	/**
-	 * Sets the base URI of the document
-	 *
-	 * @param   string  $base  The base URI to be set
-	 *
-	 * @return  self
-	 *
-	 * @since  1.0.0
-	 */
-	public function setBase(string $base): self
-	{
-		$this->base = $base;
-
-		return $this;
-	}
-
-	/**
-	 * Return the base URI of the document.
-	 *
-	 * @return  string
-	 *
-	 * @since  1.0.0
-	 */
-	public function getBase(): string
-	{
-		return $this->base;
-	}
-
-	/**
-	 * Sets the document link
-	 *
-	 * @param   string  $url  A url
-	 *
-	 * @return  self
-	 *
-	 * @since  1.0.0
-	 */
-	public function setLink(string $url): self
-	{
-		$this->link = $url;
-
-        return $this;
-    }
-
     /**
      * Return the title of the document.
      *
