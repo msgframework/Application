@@ -11,7 +11,7 @@ use Msgframework\Lib\AssetManager\WebAssetManagerInterface;
  *
  * @since  1.0.0
  */
-class ScriptsRenderer extends DocumentRenderer
+class ScriptsRenderer extends HtmlDocumentRenderer
 {
     /**
      * Debug status

@@ -2,7 +2,7 @@
 
 namespace Msgframework\Lib\Document\Renderer\Html;
 
-use Msgframework\Lib\Document\DocumentRenderer;
+use Msgframework\Lib\Document\HtmlDocumentRenderer;
 use Msgframework\Lib\AssetManager\WebAssetItemInterface;
 
 /**
@@ -10,7 +10,7 @@ use Msgframework\Lib\AssetManager\WebAssetItemInterface;
  *
  * @since  1.0.0
  */
-class StylesRenderer extends DocumentRenderer
+class StylesRenderer extends HtmlDocumentRenderer
 {
     /**
      * Debug status
@@ -186,7 +186,6 @@ class StylesRenderer extends DocumentRenderer
 	 */
 	private function renderInlineElement(WebAssetItemInterface $asset) : string
 	{
-		$buffer = '';
 		$lnEnd  = $this->_doc->getLineEnd();
 		$tab    = $this->_doc->_getTab();
 
@@ -205,7 +204,7 @@ class StylesRenderer extends DocumentRenderer
 			$attribs['nonce'] = $this->_doc->cspNonce;
 		}
 
-		$buffer .= $tab . '<style';
+		$buffer = $tab . '<style';
 		$buffer .= $this->renderAttributes($attribs);
 		$buffer .= '>';
 

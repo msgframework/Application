@@ -2,7 +2,7 @@
 
 namespace Msgframework\Lib\Document\Renderer\Html;
 
-use Msgframework\Lib\Document\DocumentRenderer;
+use Msgframework\Lib\Document\HtmlDocumentRenderer;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -10,7 +10,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since  1.0.0
  */
-class MetasRenderer extends DocumentRenderer
+class MetasRenderer extends HtmlDocumentRenderer
 {
     /**
      * Renders the document metas and returns the results as a string

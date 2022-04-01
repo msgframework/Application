@@ -2,14 +2,14 @@
 
 namespace Msgframework\Lib\Document\Renderer\Html;
 
-use Msgframework\Lib\Document\DocumentRenderer;
+use Msgframework\Lib\Document\HtmlDocumentRenderer;
 
 /**
  * HTML document renderer for the document `<head>` element
  *
  * @since  1.0.0
  */
-class HeadRenderer extends DocumentRenderer
+class HeadRenderer extends HtmlDocumentRenderer
 {
     /**
      * Renders the document head and returns the results as a string
