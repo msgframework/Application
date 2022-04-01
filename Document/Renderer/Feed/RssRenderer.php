@@ -53,8 +53,8 @@ class RssRenderer extends DocumentRenderer
 			$data->lastBuildDate = new Date('now', $tz);
 		}
 
-		$url = Uri::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-		$syndicationURL = Route::_('&format=feed&type=rss');
+        $url = Uri::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
+        $syndicationURL = $data->getSyndicationURL();
 
 		$title = $data->getTitle();
 
@@ -73,7 +73,6 @@ class RssRenderer extends DocumentRenderer
 		$feed .= "		<description><![CDATA[" . $data->getDescription() . "]]></description>\n";
 		$feed .= "		<link>" . str_replace(' ', '%20', $url . $datalink) . "</link>\n";
 		$feed .= "		<lastBuildDate>" . htmlspecialchars($data->lastBuildDate->toRFC822(true), ENT_COMPAT, 'UTF-8') . "</lastBuildDate>\n";
-		$feed .= "		<generator>" . $data->getGenerator() . "</generator>\n";
 		$feed .= "		<atom:link rel=\"self\" type=\"application/rss+xml\" href=\"" . str_replace(' ', '%20', $url . $syndicationURL) . "\"/>\n";
 
 		if ($data->image != null)
