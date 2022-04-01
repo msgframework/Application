@@ -107,22 +107,22 @@ class JsonDocument extends Document
 	 *
 	 * @since  1.0.0
 	 */
-	public function getName()
-	{
+	public function getName(): string
+    {
 		return $this->_name;
 	}
 
 	/**
 	 * Sets the document name
 	 *
-	 * @param   string  $name  Document name
+	 * @param string $name  Document name
 	 *
-	 * @return  JsonDocument instance of $this to allow chaining
+	 * @return  $this instance of $this to allow chaining
 	 *
 	 * @since  1.0.0
 	 */
-	public function setName($name = 'joomla')
-	{
+	public function setName(string $name = 'JsonDocument'): self
+    {
 		$this->_name = $name;
 
 		return $this;
