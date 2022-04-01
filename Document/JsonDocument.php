@@ -70,12 +70,9 @@ class JsonDocument extends Document
             $statusCode = 200;
         }
 
-        $data = json_encode($params['data']);
+        $data = $params['data'];
 
-        $response = parent::render($cache, $params);
-
-        $response->setContent($data);
-        $response->setStatusCode($statusCode);
+        $response = new JsonResponse($data, $statusCode);
 
         if (isset($params['maxAge']) && \array_key_exists('maxAge', $params)) {
             $response->setMaxAge($params['maxAge']);
@@ -89,12 +86,6 @@ class JsonDocument extends Document
             $response->setPrivate();
         } elseif (!isset($params['isPrivate']) || false === $params['isPrivate'] || (null === $params['isPrivate'] && (null !== $params['maxAge'] || null !== $params['sharedAge']))) {
             $response->setPublic();
-        }
-
-        if ($this->getMimeEncoding() === 'application/json')
-        {
-            // Browser other than Internet Explorer < 10
-            $response->headers->set('Content-Disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
         }
 
         return $response;
