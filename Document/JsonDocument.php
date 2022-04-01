@@ -51,32 +51,53 @@ class JsonDocument extends Document
 		$this->setType('json');
 	}
 
-	/**
-	 * Render the document.
-	 *
-	 * @param   boolean  $cache   If true, cache the output
-	 * @param   array    $params  Associative array of attributes
-	 *
-	 * @return  string  The rendered data
-	 *
-	 * @since  1.0.0
-	 */
-	public function render($cache = false, $params = array()): string
+    /**
+     * Render the document.
+     *
+     * @param boolean $cache If true, cache the output
+     * @param array $params Associative array of attributes
+     *
+     * @return Response The rendered data
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     */
+	public function render(bool $cache = false, array $params = array()): Response
 	{
-		/** @var WebApplication $app */
-		$app = Cms::getApplication();
+        if (\array_key_exists('statusCode', $params)) {
+            $statusCode = $params['statusCode'];
+        } else {
+            $statusCode = 200;
+        }
 
-		$app->allowCache($cache);
+        $data = json_encode($params['data']);
 
-		if ($this->_mime === 'application/json')
-		{
-			// Browser other than Internet Explorer < 10
-			$app->setHeader('Content-Disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
-		}
+        $response = parent::render($cache, $params);
 
-		parent::render($cache, $params);
+        $response->setContent($data);
+        $response->setStatusCode($statusCode);
 
-		return $this->getBuffer();
+        if (isset($params['maxAge']) && \array_key_exists('maxAge', $params)) {
+            $response->setMaxAge($params['maxAge']);
+        }
+
+        if (isset($params['sharedAge']) && \array_key_exists('sharedAge', $params)) {
+            $response->setSharedMaxAge($params['sharedAge']);
+        }
+
+        if (isset($params['isPrivate']) && \array_key_exists('isPrivate', $params) && $params['isPrivate'] == true) {
+            $response->setPrivate();
+        } elseif (!isset($params['isPrivate']) || false === $params['isPrivate'] || (null === $params['isPrivate'] && (null !== $params['maxAge'] || null !== $params['sharedAge']))) {
+            $response->setPublic();
+        }
+
+        if ($this->getMimeEncoding() === 'application/json')
+        {
+            // Browser other than Internet Explorer < 10
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
+        }
+
+        return $response;
 	}
 
 	/**
