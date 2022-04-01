@@ -37,7 +37,7 @@ class Factory implements FactoryInterface
 		}
 
 		/** @var Document $document */
-		$document = new $class($this, $attributes);
+		$document = new $class($this, $application, $attributes);
 
 		if (!\is_null($ntype))
 		{
