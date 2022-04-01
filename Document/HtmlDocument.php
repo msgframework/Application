@@ -119,6 +119,14 @@ class HtmlDocument extends Document
     protected WebAssetManager $webAssetManager;
 
     /**
+     * Tab string
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $_tab = "\11";
+
+    /**
      * Class constructor
      *
      * @param FactoryInterface $factory  Factory
@@ -868,5 +876,33 @@ class HtmlDocument extends Document
     public function getBase(): string
     {
         return $this->base;
+    }
+
+    /**
+     * Sets the string used to indent HTML
+     *
+     * @param   string  $string  String used to indent ("\11", "\t", '  ', etc.).
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setTab(string $string): self
+    {
+        $this->_tab = $string;
+
+        return $this;
+    }
+
+    /**
+     * Returns a string containing the unit for indenting HTML
+     *
+     * @return  string
+     *
+     * @since  1.0.0
+     */
+    public function _getTab(): string
+    {
+        return $this->_tab;
     }
 }

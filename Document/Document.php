@@ -46,14 +46,6 @@ class Document
 	public Date $_mdate;
 
 	/**
-	 * Tab string
-	 *
-	 * @var    string
-	 * @since  1.0.0
-	 */
-	public string $_tab = "\11";
-
-	/**
 	 * Contains the line end string
 	 *
 	 * @var    string
@@ -455,34 +447,6 @@ class Document
 	public function getLineEnd(): string
 	{
 		return $this->_lineEnd;
-	}
-
-	/**
-	 * Sets the string used to indent HTML
-	 *
-	 * @param   string  $string  String used to indent ("\11", "\t", '  ', etc.).
-	 *
-	 * @return  self
-	 *
-	 * @since  1.0.0
-	 */
-	public function setTab(string $string): self
-	{
-		$this->_tab = $string;
-
-		return $this;
-	}
-
-	/**
-	 * Returns a string containing the unit for indenting HTML
-	 *
-	 * @return  string
-	 *
-	 * @since  1.0.0
-	 */
-	public function _getTab(): string
-	{
-		return $this->_tab;
 	}
 
 	/**
