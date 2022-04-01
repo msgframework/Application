@@ -5,7 +5,7 @@ namespace Msgframework\Lib\Document;
 /**
  * Interface for a document renderer
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 interface RendererInterface
 {
