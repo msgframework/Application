@@ -3,6 +3,7 @@
 namespace Msgframework\Lib\Document;
 
 use Msgframework\Lib\Application\WebApplication;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
