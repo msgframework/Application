@@ -33,7 +33,7 @@ class StylesRenderer extends HtmlDocumentRenderer
     /**
      * Renders the document stylesheets and style tags and returns the results as a string
      *
-     * @param string $name (unused)
+     * @param string|null $name (unused)
      * @param array|null $params Associative array of values
      * @param string|null $content The script
      *
@@ -41,7 +41,7 @@ class StylesRenderer extends HtmlDocumentRenderer
      *
      * @since  1.0.0
      */
-	public function render(string $name, ?array $params = array(), ?string $content = null): string
+	public function render(?string $name = null, ?array $params = array(), ?string $content = null): string
 	{
 		$tab          = $this->_doc->_getTab();
 		$buffer       = '';

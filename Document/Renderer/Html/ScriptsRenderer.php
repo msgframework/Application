@@ -34,7 +34,7 @@ class ScriptsRenderer extends HtmlDocumentRenderer
     /**
      * Renders the document script tags and returns the results as a string
      *
-     * @param string $name
+     * @param string|null $name
      * @param array|null $params Associative array of values
      * @param string|null $content The script
      *
@@ -42,7 +42,7 @@ class ScriptsRenderer extends HtmlDocumentRenderer
      *
      * @since  1.0.0
      */
-	public function render(string $name, ?array $params = array(), ? string $content = null): string
+	public function render(?string $name = null, ?array $params = array(), ? string $content = null): string
 	{
 		// Get line endings
 		$lnEnd        = $this->_doc->getLineEnd();
