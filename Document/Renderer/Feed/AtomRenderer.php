@@ -5,6 +5,7 @@ namespace Msgframework\Lib\Document\Renderer\Feed;
 use Msgframework\Lib\Date\Date;
 use Msgframework\Lib\Document\DocumentRenderer;
 use Msgframework\Lib\Document\FeedDocument;
+use Msgframework\Lib\Document\FeedDocumentRenderer;
 
 /**
  * AtomRenderer is a feed that implements the atom specification
@@ -18,7 +19,7 @@ use Msgframework\Lib\Document\FeedDocument;
  *
  * @property-read  FeedDocument $_doc  Reference to the Document object that instantiated the renderer
  */
-class AtomRenderer extends DocumentRenderer
+class AtomRenderer extends FeedDocumentRenderer
 {
 	/**
 	 * Document mime type

@@ -5,7 +5,7 @@ namespace Msgframework\Lib\Document\Renderer\Feed;
 use Msgframework\Lib\Date\Date;
 use Msgframework\Lib\Document\DocumentRenderer;
 use Msgframework\Lib\Document\FeedDocument;
-use Msgframework\Lib\Route\Route;
+use Msgframework\Lib\Document\FeedDocumentRenderer;
 
 /**
  * RssRenderer is a feed that implements RSS 2.0 Specification
@@ -15,7 +15,7 @@ use Msgframework\Lib\Route\Route;
  *
  * @property-read  FeedDocument  $_doc  Reference to the Document object that instantiated the renderer
  */
-class RssRenderer extends DocumentRenderer
+class RssRenderer extends FeedDocumentRenderer
 {
 	/**
 	 * Renderer mime type
