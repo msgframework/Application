@@ -71,6 +71,6 @@ class Factory implements FactoryInterface
             throw new \RuntimeException(sprintf('Unable to load renderer class %s', $type), 500);
 		}
 
-		return new $class($this, $document);
+		return new $class($document);
 	}
 }
