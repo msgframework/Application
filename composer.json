@@ -7,7 +7,6 @@
       "Msgframework\\Lib\\Application\\": "/Application",
       "Msgframework\\Lib\\Document\\": "/Document",
       "Msgframework\\Lib\\Document\\Feed\\": "/Document/Feed",
-      "Msgframework\\Lib\\Document\\Opensearch\\": "/Document/Opensearch",
       "Msgframework\\Lib\\Document\\Renderer\\": "/Document/Renderer",
       "Msgframework\\Lib\\Document\\Renderer\\Feed\\": "/Document/Renderer/Feed",
       "Msgframework\\Lib\\Document\\Renderer\\Html\\": "/Document/Renderer/Html"
@@ -29,6 +28,9 @@
     "msgframework/assetmanager": "^v1.0",
     "symfony/http-foundation": "^5.4",
     "msgframework/date": "^1.0",
-    "symfony/web-link": "^5.4"
+    "symfony/web-link": "^5.4",
+    "msgframework/extension": "^1.0",
+    "fig/link-util": "^1.2",
+    "ext-json": "*"
   }
 }
