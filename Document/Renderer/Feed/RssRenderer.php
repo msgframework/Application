@@ -212,17 +212,10 @@ class RssRenderer extends DocumentRenderer
 
 			if (empty($data->items[$i]->category) === false)
 			{
-				if (\is_array($data->items[$i]->category))
-				{
-					foreach ($data->items[$i]->category as $cat)
-					{
-						$feed .= "			<category>" . htmlspecialchars($cat, ENT_COMPAT, 'UTF-8') . "</category>\n";
-					}
-				}
-				else
-				{
-					$feed .= "			<category>" . htmlspecialchars($data->items[$i]->category, ENT_COMPAT, 'UTF-8') . "</category>\n";
-				}
+                foreach ($data->items[$i]->category as $cat)
+                {
+                    $feed .= "			<category>" . htmlspecialchars($cat, ENT_COMPAT, 'UTF-8') . "</category>\n";
+                }
 			}
 
 			if ($data->items[$i]->comments != '')
