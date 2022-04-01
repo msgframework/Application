@@ -31,6 +31,7 @@
     "symfony/web-link": "^5.4",
     "msgframework/extension": "^1.0",
     "fig/link-util": "^1.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "symfony/cache": "^5.4"
   }
 }

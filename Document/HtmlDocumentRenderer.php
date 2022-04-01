@@ -27,6 +27,14 @@ abstract class HtmlDocumentRenderer implements RendererInterface
 	protected string $_mime = 'text/html';
 
 	/**
+	 * Allow caching Renderer result
+	 *
+	 * @var    bool
+	 * @since  1.0.0
+	 */
+	protected bool $_cacheable = false;
+
+	/**
 	 * Class constructor
 	 *
 	 * @param   HtmlDocument  $doc  A reference to the Document object that instantiated the renderer
@@ -49,6 +57,11 @@ abstract class HtmlDocumentRenderer implements RendererInterface
     {
 		return $this->_mime;
 	}
+    
+    public function isCacheble(): bool
+    {
+        return $this->_cacheable;
+    }
 
 	/**
 	 * Convert links in a text from relative to absolute

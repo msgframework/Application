@@ -7,6 +7,8 @@ use Msgframework\Lib\AssetManager\WebAssetManager;
 use Msgframework\Lib\AssetManager\WebAssetRegistry;
 use Msgframework\Lib\Extension\TemplateInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * HtmlDocument class, provides an easy interface to parse and display a HTML document
@@ -66,10 +68,10 @@ class HtmlDocument extends Document
     /**
      * Integer with caching setting
      *
-     * @var    integer|null
+     * @var    boolean
      * @since  1.0.0
      */
-    protected ?int $_caching = null;
+    protected bool $_caching = false;
 
     /**
      * Set to true when the document should be output as HTML5
@@ -127,6 +129,13 @@ class HtmlDocument extends Document
     public string $_tab = "\11";
 
     /**
+     * The Cache object
+     * @var CacheInterface
+     * @since 1.0.0
+     */
+    private CacheInterface $cache;
+
+    /**
      * Class constructor
      *
      * @param FactoryInterface $factory  Factory
@@ -172,6 +181,12 @@ class HtmlDocument extends Document
         if (\array_key_exists('tab', $options))
         {
             $this->setTab($options['tab']);
+        }
+
+        if (\array_key_exists('cache', $options))
+        {
+            $this->_caching = true;
+            $this->setCache($options['cache']);
         }
 
         // Set document type
@@ -499,34 +514,27 @@ class HtmlDocument extends Document
             return parent::$_buffer[$type][$name];
         }
 
+        /** @var HtmlDocumentRenderer $renderer */
         $renderer = $this->loadRenderer($type);
 
-//        if ($this->_caching == true && $type === 'modules' && $name !== 'debug') {
-//            /** @var  \Msgframework\Lib\Document\Renderer\Html\ModulesRenderer $renderer */
-//            $cache = \Cms::getCache('com_modules', '');
-//            $hash = md5(serialize(array($name, $attribs, null, get_class($renderer))));
-//            $cbuffer = $cache->get('cbuffer_' . $type);
-//
-//            if (isset($cbuffer[$hash])) {
-//                return Cache::getWorkarounds($cbuffer[$hash], array('mergehead' => 1));
-//            }
-//
-//            $options = array();
-//            $options['nopathway'] = 1;
-//            $options['nomodules'] = 1;
-//            $options['modulemode'] = 1;
-//
-//            $this->setBuffer($renderer->render($name, $attribs, null), $type, $name);
-//            $data = parent::$_buffer[$type][$name][$title];
-//
-//            $tmpdata = Cache::setWorkarounds($data, $options);
-//
-//            $cbuffer[$hash] = $tmpdata;
-//
-//            $cache->store($cbuffer, 'cbuffer_' . $type);
-//        } else {
-//            $this->setBuffer($renderer->render($name, $attribs, null), array('type' => $type, 'name' => $name));
-//        }
+        if ($this->_caching == true && $renderer->isCacheble()) {
+            $app = $this->getApplication();
+            $hash = md5(serialize(array($name, $attribs, null, get_class($renderer))));
+
+            // The callable will only be executed on a cache miss.
+            $rendererBuffer = $this->cache->getItem($app->getName() . '.rendererBuffer.' . $type);
+
+            if (!$rendererBuffer->isHit()) {
+                $rendererBuffer->expiresAfter(3600);
+
+                $this->setBuffer($renderer->render($name, $attribs, null), array('type' => $type, 'name' => $name));
+                $rendererBuffer[$hash] = parent::$_buffer[$type][$name];
+            }
+
+            $this->cache->save($rendererBuffer);
+        } else {
+            $this->setBuffer($renderer->render($name, $attribs, null), array('type' => $type, 'name' => $name));
+        }
 
         return parent::$_buffer[$type][$name];
     }
@@ -909,5 +917,20 @@ class HtmlDocument extends Document
     public function _getTab(): string
     {
         return $this->_tab;
+    }
+
+    /**
+     * Set Cache object
+     *
+     * @param CacheInterface $cache
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setCache(CacheInterface $cache): self
+    {
+        $this->cache = $cache;
+
+        return $this;
     }
 }
