@@ -53,7 +53,7 @@ class RssRenderer extends DocumentRenderer
 			$data->lastBuildDate = new Date('now', $tz);
 		}
 
-        $url = Uri::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
+        $url = $data->getLink();
         $syndicationURL = $data->getSyndicationURL();
 
 		$title = $data->getTitle();

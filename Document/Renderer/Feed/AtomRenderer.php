@@ -53,8 +53,8 @@ class AtomRenderer extends DocumentRenderer
         /** @var FeedDocument $document */
 		$document = $this->_doc;
 
-		$url = Uri::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-		$syndicationURL = Route::_('&format=feed&type=atom');
+        $url = $document->getLink();
+		$syndicationURL = $document->getSyndicationURL();
 
 		$title = $document->getTitle();
 
