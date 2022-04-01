@@ -3,58 +3,30 @@
 namespace Msgframework\Lib\Document\Renderer\Html;
 
 use Msgframework\Lib\Document\DocumentRenderer;
-use Msgframework\Lib\AssetManager\WebAssetAttachBehaviorInterface;
 use Joomla\Utilities\ArrayHelper;
 
 /**
  * JDocument metas renderer
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class MetasRenderer extends DocumentRenderer
 {
-	/**
-	 * Renders the document metas and returns the results as a string
-	 *
-	 * @param   string  $head     (unused)
-	 * @param   array|null   $params   Associative array of values
-	 * @param   string|null  $content  The script
-	 *
-	 * @return  string  The output of the script
-	 *
-	 * @since  1.0.0
-	 */
-	public function render(string $head, ?array $params = null, ?string $content = null): string
+    /**
+     * Renders the document metas and returns the results as a string
+     *
+     * @param string $name
+     * @param array|null $params Associative array of values
+     * @param string|null $content The script
+     *
+     * @return  string  The output of the script
+     *
+     * @since  1.0.0
+     */
+	public function render(string $name, ?array $params = null, ?string $content = null): string
 	{
-		// Convert the tagids to titles
-		if (isset($this->_doc->_metaTags['name']['tags']))
-		{
-			$tagsHelper = new TagsHelper;
-			$this->_doc->_metaTags['name']['tags'] = implode(', ', $tagsHelper->getTagNames($this->_doc->_metaTags['name']['tags']));
-		}
-
 		// Trigger the onBeforeCompileHead event
-		$app->triggerEvent('onBeforeCompileHead');
-
-		// Add Script Options as inline asset
-		$scriptOptions = $this->_doc->getScriptOptions();
-
-		if ($scriptOptions)
-		{
-			$prettyPrint = (JDEBUG && \defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : false);
-			$jsonOptions = json_encode($scriptOptions, $prettyPrint);
-			$jsonOptions = $jsonOptions ? $jsonOptions : '{}';
-
-			$wa->addInlineScript(
-				$jsonOptions,
-				['name' => 'joomla.script.options', 'position' => 'before'],
-				['type' => 'application/json', 'class' => 'joomla-script-options new'],
-				['core']
-			);
-		}
-
-		// Lock the AssetManager
-		$wa->lock();
+		//$this->_doc->getApplication()->triggerEvent('onBeforeCompileHead');
 
 		// Get line endings
 		$lnEnd        = $this->_doc->getLineEnd();
@@ -73,52 +45,6 @@ class MetasRenderer extends DocumentRenderer
 		if (!empty($base))
 		{
 			$buffer .= $tab . '<base href="' . $base . '">' . $lnEnd;
-		}
-
-		$noFavicon = true;
-		$searchFor = 'image/vnd.microsoft.icon';
-
-		// @codingStandardsIgnoreStart
-		array_map(function($value) use(&$noFavicon, $searchFor) {
-			if (isset($value['attribs']['type']) && $value['attribs']['type'] === $searchFor)
-			{
-				$noFavicon = false;
-			}
-		}, array_values((array)$this->_doc->_links));
-		// @codingStandardsIgnoreEnd
-
-		if ($noFavicon)
-		{
-			$client   = $app->isClient('administrator') === true ? 'administrator/' : 'site/';
-			$template = $app->getTemplate(true);
-
-			// Try to find a favicon by checking the template and root folder
-			$icon = '/favicon.ico';
-			$foldersToCheck = [
-				JPATH_BASE,
-				JPATH_ROOT . '/media/templates/' . $client . $template->template,
-				JPATH_BASE . '/templates/' . $template->template,
-			];
-
-			foreach ($foldersToCheck as $base => $dir)
-			{
-				if ($template->parent !== ''
-					&& $base === 1
-					&& !is_file(JPATH_ROOT . '/media/templates/' . $client . $template->template . $icon))
-				{
-					$dir = JPATH_ROOT . '/media/templates/' . $client . $template->parent;
-				}
-
-				if (is_file($dir . $icon))
-				{
-					$urlBase = in_array($base, [0, 2]) ? Uri::base(true) : Uri::root(true);
-					$base    = in_array($base, [0, 2]) ? JPATH_BASE : JPATH_ROOT;
-					$path    = str_replace($base, '', $dir);
-					$path    = str_replace('\\', '/', $path);
-					$this->_doc->addFavicon($urlBase . $path . $icon);
-					break;
-				}
-			}
 		}
 
 		// Generate META tags (needs to happen as early as possible in the head)
@@ -145,14 +71,6 @@ class MetasRenderer extends DocumentRenderer
 		if ($documentDescription)
 		{
 			$buffer .= $tab . '<meta name="description" content="' . htmlspecialchars($documentDescription, ENT_COMPAT, 'UTF-8') . '">' . $lnEnd;
-		}
-
-		// Don't add empty generators
-		$generator = $this->_doc->getGenerator();
-
-		if ($generator)
-		{
-			$buffer .= $tab . '<meta name="generator" content="' . htmlspecialchars($generator, ENT_COMPAT, 'UTF-8') . '">' . $lnEnd;
 		}
 
 		$buffer .= $tab . '<title>' . htmlspecialchars($this->_doc->getTitle(), ENT_COMPAT, 'UTF-8') . '</title>' . $lnEnd;
