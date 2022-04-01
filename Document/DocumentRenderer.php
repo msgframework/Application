@@ -13,10 +13,10 @@ abstract class DocumentRenderer implements RendererInterface
 	/**
 	 * Reference to the Document object that instantiated the renderer
 	 *
-	 * @var    HtmlDocument
+	 * @var    Document
 	 * @since  1.0.0
 	 */
-	protected HtmlDocument $_doc;
+	protected Document $_doc;
 
 	/**
 	 * Renderer mime type
@@ -29,11 +29,11 @@ abstract class DocumentRenderer implements RendererInterface
 	/**
 	 * Class constructor
 	 *
-	 * @param   HtmlDocument  $doc  A reference to the Document object that instantiated the renderer
+	 * @param   Document  $doc  A reference to the Document object that instantiated the renderer
 	 *
 	 * @since  1.0.0
 	 */
-	public function __construct(HtmlDocument $doc)
+	public function __construct(Document $doc)
 	{
 		$this->_doc = $doc;
 	}
