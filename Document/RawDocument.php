@@ -2,45 +2,74 @@
 
 namespace Msgframework\Lib\Document;
 
+use Msgframework\Lib\Application\WebApplication;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * RawDocument class, provides an easy interface to parse and display raw output
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class RawDocument extends Document
 {
 	/**
 	 * Class constructor
 	 *
-	 * @param   array  $options  Associative array of options
-	 *
-	 * @since  1.0.0
-	 */
-    public function __construct(FactoryInterface $factory, array $options = array())
+     * @param FactoryInterface $factory  Factory
+     * @param WebApplication $application  WebApplication
+     * @param array $options  Associative array of options
+     *
+     * @since  1.0.0
+     */
+    public function __construct(FactoryInterface $factory, WebApplication $application, array $options = array())
     {
-        parent::__construct($factory, $options);
+        parent::__construct($factory, $application, $options);
 
 		// Set mime type
-		$this->_mime = 'text/html';
+		$this->setMimeEncoding('text/html');
 
 		// Set document type
-		$this->_type = 'raw';
+		$this->setType('raw');
 	}
 
-	/**
-	 * Render the document.
-	 *
-	 * @param   boolean  $cache   If true, cache the output
-	 * @param   array    $params  Associative array of attributes
-	 *
-	 * @return  string  The rendered data
-	 *
-	 * @since  1.0.0
-	 */
-	public function render($cache = false, $params = array())
+    /**
+     * Render the document.
+     *
+     * @param boolean $cache If true, cache the output
+     * @param array $params Associative array of attributes
+     *
+     * @return Response The rendered data
+     *
+     * @throws \Exception
+     * @since  1.0.0
+     */
+	public function render(bool $cache = false, array $params = array()): Response
 	{
-		parent::render($cache, $params);
+        if (\array_key_exists('statusCode', $params)) {
+            $statusCode = $params['statusCode'];
+        } else {
+            $statusCode = 200;
+        }
 
-		return $this->getBuffer();
+        $response = parent::render($cache, $params);
+
+        $response->setContent($params['data']);
+        $response->setStatusCode($statusCode);
+
+        if (isset($params['maxAge']) && \array_key_exists('maxAge', $params)) {
+            $response->setMaxAge($params['maxAge']);
+        }
+
+        if (isset($params['sharedAge']) && \array_key_exists('sharedAge', $params)) {
+            $response->setSharedMaxAge($params['sharedAge']);
+        }
+
+        if (isset($params['isPrivate']) && \array_key_exists('isPrivate', $params) && $params['isPrivate'] == true) {
+            $response->setPrivate();
+        } elseif (!isset($params['isPrivate']) || false === $params['isPrivate'] || (null === $params['isPrivate'] && (null !== $params['maxAge'] || null !== $params['sharedAge']))) {
+            $response->setPublic();
+        }
+
+        return $response;
 	}
 }
