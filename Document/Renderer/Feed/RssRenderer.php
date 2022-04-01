@@ -4,16 +4,16 @@ namespace Msgframework\Lib\Document\Renderer\Feed;
 
 use Msgframework\Lib\Date\Date;
 use Msgframework\Lib\Document\DocumentRenderer;
-use Msgframework\Lib\Language\Text;
+use Msgframework\Lib\Document\FeedDocument;
 use Msgframework\Lib\Route\Route;
 
 /**
  * RssRenderer is a feed that implements RSS 2.0 Specification
  *
  * @link   http://www.rssboard.org/rss-specification
- * @since  1.1.0
+ * @since  1.0.0
  *
- * @property-read  \Msgframework\Lib\Document\FeedDocument  $_doc  Reference to the Document object that instantiated the renderer
+ * @property-read  FeedDocument  $_doc  Reference to the Document object that instantiated the renderer
  */
 class RssRenderer extends DocumentRenderer
 {
@@ -34,13 +34,15 @@ class RssRenderer extends DocumentRenderer
      *
      * @return  string  The output of the script
      *
-     * @see     DocumentRenderer::render()
+     * @throws \Exception
      * @since  1.0.0
+     * @see     DocumentRenderer::render()
      */
 	public function render(string $name = '', ?array $params = null, string $content = null): string
 	{
 		$app = $this->_doc->getApplication();
-		$tz  = new \DateTimeZone($app->get('offset'));
+        $config = $app->getConfig();
+		$tz  = new \DateTimeZone($config->get('offset', 'UTC'));
 
 		$data = $this->_doc;
 
@@ -48,23 +50,13 @@ class RssRenderer extends DocumentRenderer
 		if (!($data->lastBuildDate instanceof Date))
 		{
 			// Gets and sets timezone offset from site configuration
-			$data->lastBuildDate = Factory::getDate();
-			$data->lastBuildDate->setTimezone(new \DateTimeZone($app->get('offset')));
+			$data->lastBuildDate = new Date('now', $tz);
 		}
 
 		$url = Uri::getInstance()->toString(array('scheme', 'user', 'pass', 'host', 'port'));
 		$syndicationURL = Route::_('&format=feed&type=rss');
 
 		$title = $data->getTitle();
-
-		if ($app->get('sitename_pagetitles', 0) == 1)
-		{
-			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $data->getTitle());
-		}
-		elseif ($app->get('sitename_pagetitles', 0) == 2)
-		{
-			$title = Text::sprintf('JPAGETITLE', $data->getTitle(), $app->get('sitename'));
-		}
 
 		$feed_title = htmlspecialchars($title, ENT_COMPAT, 'UTF-8');
 
@@ -132,8 +124,7 @@ class RssRenderer extends DocumentRenderer
 
 		if ($data->pubDate != '')
 		{
-			$pubDate = Factory::getDate($data->pubDate);
-			$pubDate->setTimezone($tz);
+			$pubDate = new Date($data->pubDate, $tz);
 			$feed .= "		<pubDate>" . htmlspecialchars($pubDate->toRFC822(true), ENT_COMPAT, 'UTF-8') . "</pubDate>\n";
 		}
 
@@ -242,8 +233,7 @@ class RssRenderer extends DocumentRenderer
 
 			if ($data->items[$i]->date != '')
 			{
-				$itemDate = Factory::getDate($data->items[$i]->date);
-				$itemDate->setTimezone($tz);
+				$itemDate = new Date($data->items[$i]->date, $tz);
 				$feed .= "			<pubDate>" . htmlspecialchars($itemDate->toRFC822(true), ENT_COMPAT, 'UTF-8') . "</pubDate>\n";
 			}
 

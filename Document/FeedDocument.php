@@ -169,6 +169,13 @@ class FeedDocument extends Document
 	public array $items = array();
 
     /**
+     * Meta Description tag value.
+     * @var string
+     * @since  1.0.0
+     */
+    protected string $description;
+
+    /**
      * Class constructor
      *
      * @param FactoryInterface $factory Factory
@@ -272,5 +279,73 @@ class FeedDocument extends Document
         $this->link = $url;
 
         return $this;
+    }
+
+    /**
+     * Returns the document base url
+     *
+     * @return string
+     *
+     * @since  1.0.0
+     */
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    /**
+     * Sets the FeedDocument Syndication url
+     *
+     * @param   string  $url  A url
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setSyndicationURL(string $url): self
+    {
+        $this->syndicationURL = $url;
+
+        return $this;
+    }
+
+    /**
+     * Returns the FeedDocument Syndication url
+     *
+     * @return string
+     *
+     * @since  1.0.0
+     */
+    public function getSyndicationURL(): string
+    {
+        return $this->syndicationURL;
+    }
+
+    /**
+     * Set the meta Description tag value of the document
+     *
+     * @param string $description The meta Description to be set
+     *
+     * @return  self instance of $this to allow chaining
+     *
+     * @since   1.0.0
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Return the meta Description tag value of the document.
+     *
+     * @return  string
+     *
+     * @since   1.0.0
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 }
