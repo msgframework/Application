@@ -320,7 +320,7 @@ class Document
 	 */
 	public function getModifiedDate(): Date
 	{
-		return $this->_mdate;
+		return $this->_mdate ?? new Date();
 	}
 
 	/**
