@@ -26,7 +26,7 @@ trait IdentityAwareTrait
 	 * @var    IdentityFactoryInterface
 	 * @since  1.0.0
 	 */
-	private IdentityFactoryInterface $userFactory;
+	private IdentityFactoryInterface $identityFactory;
 
 	/**
 	 * Get the application identity.
@@ -49,9 +49,9 @@ trait IdentityAwareTrait
      *
      * @since   1.0.0
      */
-	public function loadIdentity(IdentityInterface $identity = null): self
+	public function loadIdentity(?IdentityInterface $identity = null): self
 	{
-		$this->identity = $identity ?: $this->userFactory->loadIdentityById(0);
+		$this->identity = $identity ?: $this->identityFactory->loadIdentityById(0);
 
 		return $this;
 	}
@@ -59,14 +59,14 @@ trait IdentityAwareTrait
 	/**
 	 * Set the user factory to use.
 	 *
-	 * @param   IdentityFactoryInterface  $userFactory  The user factory to use
+	 * @param   IdentityFactoryInterface  $identityFactory  The user factory to use
 	 *
 	 * @return  void
 	 *
 	 * @since   1.0.0
 	 */
-	public function setUserFactory(IdentityFactoryInterface $userFactory): void
+	public function setIdentityFactory(IdentityFactoryInterface $identityFactory): void
 	{
-		$this->userFactory = $userFactory;
+		$this->identityFactory = $identityFactory;
 	}
 }
