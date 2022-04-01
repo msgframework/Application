@@ -3,8 +3,7 @@
 namespace Msgframework\Lib\Document\Renderer\Html;
 
 use Msgframework\Lib\AssetManager\WebAssetItemInterface;
-use Msgframework\Lib\Document\DocumentRenderer;
-use Msgframework\Lib\AssetManager\WebAssetManagerInterface;
+use Msgframework\Lib\Document\HtmlDocumentRenderer;
 
 /**
  * JDocument head renderer
