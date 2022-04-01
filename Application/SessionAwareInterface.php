@@ -31,6 +31,15 @@ interface SessionAwareInterface extends WebApplicationInterface
 	 */
 	public function setSession(SessionInterface $session): self;
 
+    /**
+     * Starts the session storage.
+     *
+     * @return $this
+     *
+     * @since 1.0.0
+     */
+    public function sessionStart(): self;
+
 	/**
 	 * Checks for a form token in the request.
 	 *
