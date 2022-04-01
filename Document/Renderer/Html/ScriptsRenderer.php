@@ -2,18 +2,26 @@
 
 namespace Msgframework\Lib\Document\Renderer\Html;
 
-
-
+use Msgframework\Lib\AssetManager\WebAssetItemInterface;
 use Msgframework\Lib\Document\DocumentRenderer;
 use Msgframework\Lib\AssetManager\WebAssetManagerInterface;
 
 /**
  * JDocument head renderer
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class ScriptsRenderer extends DocumentRenderer
 {
+    /**
+     * Debug status
+     *
+     * @var bool
+     *
+     * @since  1.0.0
+     */
+    protected bool $debug = false;
+
 	/**
 	 * List of already rendered src
 	 *
@@ -21,20 +29,20 @@ class ScriptsRenderer extends DocumentRenderer
 	 *
 	 * @since  1.0.0
 	 */
-	private $renderedSrc = [];
+	private array $renderedSrc = [];
 
-	/**
-	 * Renders the document script tags and returns the results as a string
-	 *
-	 * @param   string  $head     (unused)
-	 * @param   array   $params   Associative array of values
-	 * @param   string  $content  The script
-	 *
-	 * @return  string  The output of the script
-	 *
-	 * @since  1.0.0
-	 */
-	public function render($head, $params = array(), $content = null): string
+    /**
+     * Renders the document script tags and returns the results as a string
+     *
+     * @param string $name
+     * @param array|null $params Associative array of values
+     * @param string|null $content The script
+     *
+     * @return  string  The output of the script
+     *
+     * @since  1.0.0
+     */
+	public function render(string $name, ?array $params = array(), ? string $content = null): string
 	{
 		// Get line endings
 		$lnEnd        = $this->_doc->getLineEnd();
@@ -42,77 +50,46 @@ class ScriptsRenderer extends DocumentRenderer
 		$buffer       = '';
 		$wam          = $this->_doc->getWebAssetManager();
 		$assets       = $wam->getAssets('script', true);
+        $this->debug  = $params['debug'] ?? false;
 
 		// Get a list of inline assets and their relation with regular assets
 		$inlineAssets   = $wam->filterOutInlineAssets($assets);
 		$inlineRelation = $wam->getInlineRelation($inlineAssets);
 
-		// Merge with existing scripts, for rendering
-		$assets = array_merge(array_values($assets), $this->_doc->_scripts);
-
 		// Generate script file links
-		foreach ($assets as $key => $item)
+		foreach ($assets as $key => $asset)
 		{
-			// Check whether we have an Asset instance, or old array with attributes
-			$asset = $item instanceof WebAssetItemInterface ? $item : null;
-
-			// Add src attribute for non Asset item
-			if (!$asset)
-			{
-				$item['src'] = $key;
-			}
-
 			// Check for inline content "before"
 			if ($asset && !empty($inlineRelation[$asset->getName()]['before']))
 			{
-				foreach ($inlineRelation[$asset->getName()]['before'] as $itemBefore)
+				foreach ($inlineRelation[$asset->getName()]['before'] as $assetBefore)
 				{
-					$buffer .= $this->renderInlineElement($itemBefore);
+					$buffer .= $this->renderInlineElement($assetBefore);
 
 					// Remove this item from inline queue
-					unset($inlineAssets[$itemBefore->getName()]);
+					unset($inlineAssets[$assetBefore->getName()]);
 				}
 			}
 
-			$buffer .= $this->renderElement($item);
+			$buffer .= $this->renderElement($asset);
 
 			// Check for inline content "after"
 			if ($asset && !empty($inlineRelation[$asset->getName()]['after']))
 			{
-				foreach ($inlineRelation[$asset->getName()]['after'] as $itemBefore)
+				foreach ($inlineRelation[$asset->getName()]['after'] as $assetBefore)
 				{
-					$buffer .= $this->renderInlineElement($itemBefore);
+					$buffer .= $this->renderInlineElement($assetBefore);
 
 					// Remove this item from inline queue
-					unset($inlineAssets[$itemBefore->getName()]);
+					unset($inlineAssets[$assetBefore->getName()]);
 				}
 			}
 		}
 
 		// Generate script declarations for assets
-		foreach ($inlineAssets as $item)
+		foreach ($inlineAssets as $asset)
 		{
-			$buffer .= $this->renderInlineElement($item);
-		}
-
-		// Generate script declarations for old scripts
-		foreach ($this->_doc->_script as $type => $contents)
-		{
-			// Test for B.C. in case someone still store script declarations as single string
-			if (\is_string($contents))
-			{
-				$contents = [$contents];
-			}
-
-			foreach ($contents as $content)
-			{
-				$buffer .= $this->renderInlineElement(
-					[
-						'type' => $type,
-						'content' => $content,
-					]
-				);
-			}
+			$buffer .= $this->renderInlineElement($asset);
 		}
 
 		// Output the custom tags - array_unique makes sure that we don't output the same tags twice
@@ -127,60 +104,48 @@ class ScriptsRenderer extends DocumentRenderer
 	/**
 	 * Renders the element
 	 *
-	 * @param   WebAssetItemInterface|array  $item  The element
+	 * @param   WebAssetItemInterface  $asset  The element
 	 *
 	 * @return  string  The resulting string
 	 *
 	 * @since  1.0.0
 	 */
-	private function renderElement($item) : string
+	private function renderElement(WebAssetItemInterface $asset) : string
 	{
 		$buffer = '';
-		$asset  = $item instanceof WebAssetItemInterface ? $item : null;
-		$src    = $asset ? $asset->getUri() : ($item['src'] ?? '');
+		$src    = $asset->getUri();
 
 		// Make sure we have a src, and it not already rendered
-		if (!$src || !empty($this->renderedSrc[$src]) || ($asset && $asset->getOption('webcomponent')))
+		if (!$src || !empty($this->renderedSrc[$src]) || ($asset->getOption('webcomponent')))
 		{
 			return '';
 		}
 
 		$lnEnd        = $this->_doc->getLineEnd();
 		$tab          = $this->_doc->_getTab();
-		$mediaVersion = $this->_doc->getMediaVersion();
 
-		// Get the attributes and other options
-		if ($asset)
-		{
-			$attribs     = $asset->getAttributes();
-			$version     = $asset->getVersion();
-			$conditional = $asset->getOption('conditional');
+        $attribs     = $asset->getAttributes();
+        $version     = $asset->getVersion();
+        $conditional = $asset->getOption('conditional');
 
-			// Add an asset info for debugging
-			if (JDEBUG)
-			{
-				$attribs['data-asset-name'] = $asset->getName();
+        // Add an asset info for debugging
+        if ($this->debug)
+        {
+            $attribs['data-asset-name'] = $asset->getName();
 
-				if ($asset->getDependencies())
-				{
-					$attribs['data-asset-dependencies'] = implode(',', $asset->getDependencies());
-				}
-			}
-		}
-		else
-		{
-			$attribs     = $item;
-			$version     = isset($attribs['options']['version']) ? $attribs['options']['version'] : '';
-			$conditional = !empty($attribs['options']['conditional']) ? $attribs['options']['conditional'] : null;
-		}
+            if ($asset->getDependencies())
+            {
+                $attribs['data-asset-dependencies'] = implode(',', $asset->getDependencies());
+            }
+        }
 
 		// To prevent double rendering
 		$this->renderedSrc[$src] = true;
 
 		// Check if script uses media version.
-		if ($version && strpos($src, '?') === false && ($mediaVersion || $version !== 'auto'))
+		if ($version && strpos($src, '?') === false)
 		{
-			$src .= '?' . ($version === 'auto' ? $mediaVersion : $version);
+			$src .= '?' . $version;
 		}
 
 		$buffer .= $tab;
@@ -210,30 +175,21 @@ class ScriptsRenderer extends DocumentRenderer
 	/**
 	 * Renders the inline element
 	 *
-	 * @param   WebAssetItemInterface|array  $item  The element
+	 * @param   WebAssetItemInterface  $asset  The element
 	 *
 	 * @return  string  The resulting string
 	 *
 	 * @since  1.0.0
 	 */
-	private function renderInlineElement($item) : string
+	private function renderInlineElement(WebAssetItemInterface $asset) : string
 	{
 		$buffer = '';
 		$lnEnd  = $this->_doc->getLineEnd();
 		$tab    = $this->_doc->_getTab();
 
-		if ($item instanceof WebAssetItemInterface)
-		{
-			$attribs = $item->getAttributes();
-			$content = $item->getOption('content');
-		}
-		else
-		{
-			$attribs = $item;
-			$content = $item['content'] ?? '';
+        $attribs = $asset->getAttributes();
+        $content = $asset->getOption('content');
 
-			unset($attribs['content']);
-		}
 
 		// Do not produce empty elements
 		if (!$content)
