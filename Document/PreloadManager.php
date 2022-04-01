@@ -9,7 +9,7 @@ use Psr\Link\EvolvableLinkProviderInterface;
 /**
  * Preload Manager
  *
- * @since  1.1.0
+ * @since  1.0.0
  */
 class PreloadManager implements PreloadManagerInterface
 {
@@ -21,13 +21,13 @@ class PreloadManager implements PreloadManagerInterface
 	 */
 	protected $linkProvider;
 
-	/**
-	 * PreloadManager constructor
-	 *
-	 * @param   EvolvableLinkProviderInterface  $linkProvider  The link provider
-	 *
-	 * @since  1.0.0
-	 */
+    /**
+     * PreloadManager constructor
+     *
+     * @param EvolvableLinkProviderInterface|null $linkProvider The link provider
+     *
+     * @since  1.0.0
+     */
 	public function __construct(EvolvableLinkProviderInterface $linkProvider = null)
 	{
 		$this->linkProvider = $linkProvider ?: new GenericLinkProvider;
@@ -54,8 +54,8 @@ class PreloadManager implements PreloadManagerInterface
 	 *
 	 * @since  1.0.0
 	 */
-	public function setLinkProvider(EvolvableLinkProviderInterface $linkProvider)
-	{
+	public function setLinkProvider(EvolvableLinkProviderInterface $linkProvider): PreloadManager
+    {
 		$this->linkProvider = $linkProvider;
 
 		return $this;
