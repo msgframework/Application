@@ -134,11 +134,6 @@ class Document
 		{
 			$this->setDirection($options['direction']);
 		}
-
-		if (\array_key_exists('tab', $options))
-		{
-			$this->setTab($options['tab']);
-		}
 	}
 
 	/**

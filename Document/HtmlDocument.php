@@ -169,6 +169,11 @@ class HtmlDocument extends Document
             $this->setBase($options['base']);
         }
 
+        if (\array_key_exists('tab', $options))
+        {
+            $this->setTab($options['tab']);
+        }
+
         // Set document type
         $this->setType('html');
 
