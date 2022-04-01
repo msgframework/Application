@@ -64,7 +64,7 @@ class FeedItem
 	 *
 	 * optional
 	 *
-	 * @var    array or string
+	 * @var    array
 	 * @since  1.0.0
 	 */
 	public array $category;
