@@ -38,7 +38,7 @@ interface SessionAwareInterface extends WebApplicationInterface
      *
      * @since 1.0.0
      */
-    public function sessionStart(): self;
+    public function startSession(): self;
 
 	/**
 	 * Checks for a form token in the request.
