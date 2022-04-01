@@ -176,6 +176,14 @@ class FeedDocument extends Document
     protected string $description;
 
     /**
+     * FeedDocument base URL
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    public string $base = '';
+
+    /**
      * Class constructor
      *
      * @param FactoryInterface $factory Factory
@@ -291,6 +299,34 @@ class FeedDocument extends Document
     public function getLink(): string
     {
         return $this->link;
+    }
+
+    /**
+     * Sets the base URI of the document
+     *
+     * @param   string  $base  The base URI to be set
+     *
+     * @return  self
+     *
+     * @since  1.0.0
+     */
+    public function setBase(string $base): self
+    {
+        $this->base = $base;
+
+        return $this;
+    }
+
+    /**
+     * Return the base URI of the document.
+     *
+     * @return  string
+     *
+     * @since  1.0.0
+     */
+    public function getBase(): string
+    {
+        return $this->base;
     }
 
     /**
