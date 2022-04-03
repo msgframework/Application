@@ -24,6 +24,11 @@ abstract class AbstractApplication
         exit($code);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function getFactory(): WebApplicationFactoryInterface
     {
         return $this->factory;

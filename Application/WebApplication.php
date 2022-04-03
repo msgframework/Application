@@ -35,9 +35,9 @@ class WebApplication extends AbstractApplication implements WebApplicationInterf
     {
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function getDir(): string

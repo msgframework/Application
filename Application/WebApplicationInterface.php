@@ -10,7 +10,7 @@ interface WebApplicationInterface
 {
     public function start(): void;
     public function beforeStart(): void;
-    public function getName(): string;
+    public function getTitle(): string;
     public function getDir(): string;
     public function getConfig(): Config;
     public function getLanguage(): Language;
