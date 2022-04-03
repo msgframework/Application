@@ -25,7 +25,7 @@
     "msgframework/config": "^1.0",
     "msgframework/route": "^1.0",
     "msgframework/identity": "^1.0",
-    "msgframework/assetmanager": "^v1.0",
+    "msgframework/assetmanager": "^1.0",
     "symfony/http-foundation": "^5.4",
     "msgframework/date": "^1.0",
     "symfony/web-link": "^5.4",

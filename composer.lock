@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4409193f6ee9f77a3544a2b8a412e539",
+    "content-hash": "a6836dc40e475495edc3c5f7bf7fe759",
     "packages": [
         {
             "name": "brick/math",
@@ -504,34 +504,36 @@
         },
         {
             "name": "msgframework/assetmanager",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msgframework/AssetManager.git",
-                "reference": "e79c78c570df7b6726b841e2bcff36b39b3803bd"
+                "reference": "00b6ec4a87c9fe191b1f1cc603208139a9b60e4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msgframework/AssetManager/zipball/e79c78c570df7b6726b841e2bcff36b39b3803bd",
-                "reference": "e79c78c570df7b6726b841e2bcff36b39b3803bd",
+                "url": "https://api.github.com/repos/msgframework/AssetManager/zipball/00b6ec4a87c9fe191b1f1cc603208139a9b60e4a",
+                "reference": "00b6ec4a87c9fe191b1f1cc603208139a9b60e4a",
                 "shasum": ""
             },
             "require": {
                 "league/uri": "^6.5",
                 "msgframework/event": "^v1.0",
+                "msgframework/language": "^1.0",
                 "php": ">=7.4",
                 "symfony/event-dispatcher": "^5|^6"
             },
             "require-dev": {
-                "ext-json": "*"
+                "ext-json": "*",
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Msgframework\\Lib\\AssetManager\\": "",
-                    "Msgframework\\Lib\\AssetManager\\Event\\\\": "/Event",
-                    "MSGFramework\\Lib\\AssetManager\\Exception\\": "/Exception",
-                    "Msgframework\\Lib\\AssetManager\\AssetItem\\\\": "/AssetItem"
+                    "Msgframework\\Lib\\AssetManager\\Event\\": "/Event",
+                    "Msgframework\\Lib\\AssetManager\\AssetItem\\": "/AssetItem",
+                    "Msgframework\\Lib\\AssetManager\\Exception\\": "/Exception"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -546,9 +548,9 @@
             ],
             "support": {
                 "issues": "https://github.com/msgframework/AssetManager/issues",
-                "source": "https://github.com/msgframework/AssetManager/tree/v1.0.0"
+                "source": "https://github.com/msgframework/AssetManager/tree/v1.0.1"
             },
-            "time": "2022-03-15T20:36:54+00:00"
+            "time": "2022-04-01T23:54:53+00:00"
         },
         {
             "name": "msgframework/config",
@@ -904,12 +906,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/msgframework/Route.git",
-                "reference": "835b72c689005ac0a95b39608d988c018c4e92db"
+                "reference": "3c7ec4c548511b16d6e5ae045d0a6a02fc5859fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msgframework/Route/zipball/835b72c689005ac0a95b39608d988c018c4e92db",
-                "reference": "835b72c689005ac0a95b39608d988c018c4e92db",
+                "url": "https://api.github.com/repos/msgframework/Route/zipball/3c7ec4c548511b16d6e5ae045d0a6a02fc5859fc",
+                "reference": "3c7ec4c548511b16d6e5ae045d0a6a02fc5859fc",
                 "shasum": ""
             },
             "require": {
@@ -933,8 +935,8 @@
             ],
             "authors": [
                 {
-                    "name": "msgtech",
-                    "email": "email@example.com"
+                    "name": "MSGroupFM",
+                    "email": "admin@msgru.com"
                 }
             ],
             "description": "description",
@@ -942,7 +944,7 @@
                 "issues": "https://github.com/msgframework/Route/issues",
                 "source": "https://github.com/msgframework/Route/tree/v1.0.0"
             },
-            "time": "2022-03-26T11:13:35+00:00"
+            "time": "2022-04-03T11:12:10+00:00"
         },
         {
             "name": "psr/cache",
