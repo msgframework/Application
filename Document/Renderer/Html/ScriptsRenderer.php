@@ -155,6 +155,8 @@ class ScriptsRenderer extends HtmlDocumentRenderer
 			$buffer .= '<!--[if ' . $conditional . ']>';
 		}
 
+        $src = $this->_doc->getBase() . $src;
+
 		// Render the element with attributes
 		$buffer .= '<script src="' . htmlspecialchars($src) . '"';
 		$buffer .= $this->renderAttributes($attribs);

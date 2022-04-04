@@ -154,6 +154,8 @@ class StylesRenderer extends HtmlDocumentRenderer
 			unset($attribs['rel']);
 		}
 
+        $src = $this->_doc->getBase() . $src;
+
 		// Render the element with attributes
 		$buffer .= '<link href="' . htmlspecialchars($src) . '" rel="' . $relation . '"';
 		$buffer .= $this->renderAttributes($attribs);
