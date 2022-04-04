@@ -53,7 +53,7 @@ class WebApplication extends AbstractApplication implements WebApplicationInterf
             $type = $config->get('route_type', 'simple');
 
             $builder = $this->factory->getContainer()->get('router.' . $type);
-            $this->router = new Router($this, $request, $builder->buildRules($this));
+            $this->router = new Router($config, $request, $builder->buildRules($this));
         }
         return $this->router;
     }
