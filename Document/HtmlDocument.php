@@ -5,10 +5,8 @@ namespace Msgframework\Lib\Document;
 use Msgframework\Lib\Application\WebApplication;
 use Msgframework\Lib\AssetManager\WebAssetManager;
 use Msgframework\Lib\AssetManager\WebAssetRegistry;
-use Msgframework\Lib\Extension\TemplateInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * HtmlDocument class, provides an easy interface to parse and display a HTML document
@@ -56,14 +54,6 @@ class HtmlDocument extends Document
      * @since  1.0.0
      */
     public ?string $cspNonce = null;
-
-    /**
-     * String holding parsed template
-     *
-     * @var    TemplateInterface
-     * @since  1.0.0
-     */
-    protected TemplateInterface $template;
 
     /**
      * Integer with caching setting
@@ -147,12 +137,6 @@ class HtmlDocument extends Document
     public function __construct(FactoryInterface $factory, WebApplication $application, array $options = array())
     {
         parent::__construct($factory, $application, $options);
-
-        if (\array_key_exists('template', $options)) {
-            $this->setTemplate($options['template']);
-        } else {
-            throw new \InvalidArgumentException(sprintf('Missing required parameter "%s" for document "%s"', 'template', self::class));
-        }
 
         if (\array_key_exists('preloadManager', $options)) {
             $this->setPreloadManager($options['preloadManager']);
@@ -575,15 +559,23 @@ class HtmlDocument extends Document
             $statusCode = 200;
         }
 
-        if (\array_key_exists('tmpl', $params)) {
-            $file = $params['tmpl'] . '.php';
-        } else {
-            $file = 'index.php';
+        if(!\array_key_exists('dir', $params)) {
+            throw new \RuntimeException(sprintf('Required parameter "%s" not specified', 'dir'));
         }
+
+        $dir = $params['dir'];
+
+        if (\array_key_exists('tmpl', $params)) {
+            $filename = $params['tmpl'] . '.php';
+        } else {
+            $filename = 'index.php';
+        }
+
+        $file = $dir . DIRECTORY_SEPARATOR . $filename;
 
         $response = parent::render($cache, $params);
 
-        $response->setContent($this->_loadTemplate($this->getTemplate()->getDir(), $file));
+        $response->setContent($this->_loadTemplate($file));
         $response->setStatusCode($statusCode);
 
 
@@ -653,22 +645,21 @@ class HtmlDocument extends Document
     /**
      * Load a template file
      *
-     * @param string $directory The name of the template
      * @param string $filename The actual filename
      *
      * @return  string  The contents of the template
      *
      * @since  1.0.0
      */
-    protected function _loadTemplate(string $directory, string $filename): string
+    protected function _loadTemplate(string $filename): string
     {
         $contents = '';
 
         // Check to see if we have a valid template file
-        if (is_file($directory . '/' . $filename)) {
+        if (is_file($filename)) {
             // Get the file content
             ob_start();
-            require $directory . '/' . $filename;
+            require $filename;
             $contents = ob_get_contents();
             ob_end_clean();
         }
@@ -810,29 +801,6 @@ class HtmlDocument extends Document
         }
 
         return $this;
-    }
-
-    /**
-     * Set link to Template object.
-     *
-     * @param TemplateInterface $template
-     * @return $this
-     */
-    public function setTemplate(TemplateInterface $template): self
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Return link to Template object.
-     *
-     * @return TemplateInterface
-     */
-    public function getTemplate(): TemplateInterface
-    {
-        return $this->template;
     }
 
     /**

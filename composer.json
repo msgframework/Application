@@ -29,7 +29,6 @@
     "symfony/http-foundation": "^5.4",
     "msgframework/date": "^1.0",
     "symfony/web-link": "^5.4",
-    "msgframework/extension": "^1.0",
     "fig/link-util": "^1.1",
     "ext-json": "*",
     "symfony/cache": "^5.4"
