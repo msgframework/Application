@@ -283,6 +283,22 @@ class Document
 	}
 
     /**
+     * Set the title of the document.
+     *
+     * @param string $title
+     *
+     * @return  $this
+     *
+     * @since   1.0.0
+     */
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
      * Return the title of the document.
      *
      * @return  string
