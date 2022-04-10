@@ -65,10 +65,23 @@ trait SessionAwareTrait
 		$token = $this->getFormToken();
         $request = $this->factory->getRequest();
 
+        switch ($method) {
+            case 'post':
+                $data = $request->request;
+            break;
+
+            case 'get':
+                $data = $request->query;
+            break;
+
+            default:
+                throw new \RuntimeException(sprintf('Method named "%s" is unknown.', $method));
+        }
+
 		// Support a token sent via the X-CSRF-Token header, then fall back to a token in the request
 		$requestToken = $request->server->getAlnum(
 			'HTTP_X_CSRF_TOKEN',
-            $request->$method->getAlnum($token, '')
+            $data->getAlnum($token, '')
 		);
 
 		if (!$requestToken)
