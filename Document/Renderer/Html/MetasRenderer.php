@@ -15,7 +15,7 @@ class MetasRenderer extends HtmlDocumentRenderer
     /**
      * Renders the document metas and returns the results as a string
      *
-     * @param string $name
+     * @param string|null $name
      * @param array|null $params Associative array of values
      * @param string|null $content The script
      *
@@ -23,7 +23,7 @@ class MetasRenderer extends HtmlDocumentRenderer
      *
      * @since  1.0.0
      */
-	public function render(string $name, ?array $params = null, ?string $content = null): string
+	public function render(?string $name = null, ?array $params = null, ?string $content = null): string
 	{
 		// Trigger the onBeforeCompileHead event
 		//$this->_doc->getApplication()->triggerEvent('onBeforeCompileHead');

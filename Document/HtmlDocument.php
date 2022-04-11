@@ -76,7 +76,7 @@ class HtmlDocument extends Document
      * @var string
      * @since  1.0.0
      */
-    protected string $description;
+    protected string $description = '';
 
     /**
      * Array of meta tags
